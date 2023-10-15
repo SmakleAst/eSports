@@ -10,4 +10,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Player.Domain\Players.Domain.csproj" />
+    <ProjectReference Include="..\Stats.Domain\Stats.Domain.csproj" />
+    <ProjectReference Include="..\Teams.Domain\Teams.Domain.csproj" />
+    <ProjectReference Include="..\Tournament.Domain\Tournament.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
