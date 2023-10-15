@@ -7,38 +7,36 @@ using System.Threading.Tasks;
 
 namespace eSports.Backend.DAL.Repositories
 {
-    public class StatsRepository
+    public class StatsRepository : IBaseRepository<StatsEntity>
     {
-        public class ComputerRepository : IBaseRepository<ComputerEntity>
+        private readonly AppDbContext _appDbContext;
+
+        public StatsRepository(AppDbContext appDbContext) =>
+            _appDbContext = appDbContext;
+
+        public async Task Create(StatsEntity entity)
         {
-            private readonly AppDbContext _appDbContext;
-
-            public ComputerRepository(AppDbContext appDbContext) =>
-                _appDbContext = appDbContext;
-
-            public async Task Create(ComputerEntity entity)
-            {
-                await _appDbContext.Computers.AddAsync(entity);
-                await _appDbContext.SaveChangesAsync();
-            }
-
-            public async Task Delete(ComputerEntity entity)
-            {
-                _appDbContext.Computers.Remove(entity);
-                await _appDbContext.SaveChangesAsync();
-            }
-
-            public IQueryable<ComputerEntity> GetAll()
-            {
-                return _appDbContext.Computers;
-            }
-
-            public async Task<ComputerEntity> Update(ComputerEntity entity)
-            {
-                _appDbContext.Computers.Update(entity);
-                await _appDbContext.SaveChangesAsync();
-
-                return entity;
-            }
+            await _appDbContext.Stats.AddAsync(entity);
+            await _appDbContext.SaveChangesAsync();
         }
+
+        public async Task Delete(StatsEntity entity)
+        {
+            _appDbContext.Stats.Remove(entity);
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public IQueryable<StatsEntity> GetAll()
+        {
+            return _appDbContext.Stats;
+        }
+
+        public async Task<StatsEntity> Update(StatsEntity entity)
+        {
+            _appDbContext.Stats.Update(entity);
+            await _appDbContext.SaveChangesAsync();
+
+            return entity;
+        }
+    }
 }

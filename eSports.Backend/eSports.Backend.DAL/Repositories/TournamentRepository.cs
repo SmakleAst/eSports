@@ -1,6 +1,9 @@
-﻿namespace eSports.Backend.DAL.Repositories
+﻿using eSports.Backend.DAL.Interfaces;
+using Tournament.Domain.Entity;
+
+namespace eSports.Backend.DAL.Repositories
 {
-    public class TournamentRepository
+    public class TournamentRepository : IBaseRepository<TournamentEntity>
     {
         private readonly AppDbContext _appDbContext;
 

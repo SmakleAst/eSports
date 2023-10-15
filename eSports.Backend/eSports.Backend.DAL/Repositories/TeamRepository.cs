@@ -1,4 +1,5 @@
 ﻿using eSports.Backend.DAL.Interfaces;
+using Teams.Domain.Entity;
 
 namespace eSports.Backend.DAL.Repositories
 {

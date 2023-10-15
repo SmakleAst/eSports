@@ -1,21 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using Players.Domain.Entity;
+using Stats.Domain.Entity;
+using Teams.Domain.Entity;
+using Tournament.Domain.Entity;
 
 namespace eSports.Backend.DAL
 {
-    public class AppDbContext
+    public class AppDbContext : DbContext
     {
-        public class AppDbContext : DbContext
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-            {
-                Database.EnsureCreated();
-            }
-
-            public DbSet<PlayerEntity> Players { get; set; }
-            public DbSet<StatsEntity> Stats { get; set; }
-            public DbSet<TeamsEntity> Teams { get; set; }
-            public DbSet<TournamentsEntity> Tournaments { get; set; }
+            Database.EnsureCreated();
         }
+
+        public DbSet<PlayerEntity> Players { get; set; }
+        public DbSet<StatsEntity> Stats { get; set; }
+        public DbSet<TeamEntity> Teams { get; set; }
+        public DbSet<TournamentEntity> Tournaments { get; set; }
     }
 }

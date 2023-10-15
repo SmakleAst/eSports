@@ -37,6 +37,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tournaments.Services", "Tou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eSports.Backend.DAL", "eSports.Backend.DAL\eSports.Backend.DAL.csproj", "{BD62EDE6-50B0-4B9B-BFD8-82C1FC6845D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Players.Domain", "Player.Domain\Players.Domain.csproj", "{95E0ACF2-2C2F-4A63-8E51-766246F89CBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{BD62EDE6-50B0-4B9B-BFD8-82C1FC6845D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD62EDE6-50B0-4B9B-BFD8-82C1FC6845D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD62EDE6-50B0-4B9B-BFD8-82C1FC6845D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95E0ACF2-2C2F-4A63-8E51-766246F89CBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95E0ACF2-2C2F-4A63-8E51-766246F89CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95E0ACF2-2C2F-4A63-8E51-766246F89CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95E0ACF2-2C2F-4A63-8E51-766246F89CBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{F313F0DB-EA01-4E3A-A4F3-F27041B2295A} = {FFF0667E-EB35-4B33-A0AA-561EF1DDFC94}
 		{5E1D64FE-D77C-4F2B-A10D-A8267665EA03} = {FFF0667E-EB35-4B33-A0AA-561EF1DDFC94}
 		{BD62EDE6-50B0-4B9B-BFD8-82C1FC6845D9} = {2B2F126E-3830-4FE3-B64A-9E6E5138681C}
+		{95E0ACF2-2C2F-4A63-8E51-766246F89CBD} = {55A018FF-216A-4C34-B2B5-B4E7FA6B4006}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B012C7CC-BF43-4D74-A875-091E0B99F5A0}
