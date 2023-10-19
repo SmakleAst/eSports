@@ -19,9 +19,9 @@ namespace eSports.Service.Teams.Implementations
     public class TeamService : ITeamService
     {
         private readonly IBaseRepository<TeamEntity> _teamRepository;
-        private ILogger<PlayerService> _logger;
+        private ILogger<TeamService> _logger;
 
-        public TeamService(IBaseRepository<TeamEntity> teamRepository, ILogger<PlayerService> logger) =>
+        public TeamService(IBaseRepository<TeamEntity> teamRepository, ILogger<TeamService> logger) =>
                 (_teamRepository, _logger) = (teamRepository, logger);
 
         public async Task<ITeamResponse<TeamEntity>> Create(CreateTeamViewModel model)
