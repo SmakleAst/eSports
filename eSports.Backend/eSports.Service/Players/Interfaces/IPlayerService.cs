@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using eSports.Backend.Domain.Players.Response;
+using eSports.Domain.Players.Entity;
+using eSports.Domain.Players.Filter;
+using eSports.Domain.Players.ViewModels;
 
 namespace eSports.Service.Players.Interfaces
 {
-    internal interface IPlayerService
+    public interface IPlayerService
     {
+        Task<IPlayerResponse<PlayerEntity>> Create(CreatePlayerViewModel model);
+
+        Task<IPlayerResponse<PlayerEntity>> Delete(PlayerViewModel model);
+
+        Task<IPlayerResponse<PlayerEntity>> Update(PlayerViewModel model);
+
+        Task<IPlayerResponse<IEnumerable<PlayerViewModel>>> GetAllPlayers(PlayerFilter filter);
     }
 }

@@ -3,6 +3,8 @@ using eSports.DAL.Repositories;
 using eSports.Domain.Teams.Entity;
 using eSports.Service.Teams.Interfaces;
 using eSports.Service.Teams.Implementations;
+using eSports.DAL;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -38,6 +40,6 @@ app.UseCors("AllowAllOrigins");
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Stats}/{action=StatsHandler}");
+    pattern: "{controller=Teams}/{action=TeamsHandler}");
 
 app.Run();

@@ -13,18 +13,13 @@ namespace eSports.Domain.Teams.ViewModels
         {
             if (string.IsNullOrWhiteSpace(Name))
             {
-                throw new ArgumentNullException(Name, "Укажите имя");
+                throw new ArgumentNullException(Name, "Укажите название");
             }
 
             if (string.IsNullOrWhiteSpace(Country))
             {
                 throw new ArgumentNullException(Country, "Укажите страну");
             }
-
-            //if (Players.Count < 1)
-            //{
-            //    throw new ArgumentNullException(Players.ToString(), "Укажите игроков");
-            //}
         }
     }
 }

@@ -1,5 +1,5 @@
-﻿using eSports.DAL.Interfaces;
-using eSports.Domain.Tournament.Entity;
+﻿using eSports.Domain.Tournament.Entity;
+using eSports.DAL.Interfaces;
 
 namespace eSports.DAL.Repositories
 {

@@ -1,6 +1,5 @@
 ﻿using eSports.Domain.Teams.Entity;
 using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
 namespace eSports.Domain.Tournament.ViewModels
 {
