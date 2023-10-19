@@ -19,10 +19,8 @@ namespace eSports.Service.Stats.Implementations
         private ILogger<StatsService> _logger;
 
         public StatsService(IBaseRepository<StatsEntity> statsRepository,
-                                IBaseRepository<TeamEntity> teamRepository,
-                                ILogger<StatsService> logger) =>
-                            (_statsRepository, _teamRepository, _logger) =
-                            (statsRepository, teamRepository, logger);
+            IBaseRepository<TeamEntity> teamRepository, ILogger<StatsService> logger) =>
+                (_statsRepository, _teamRepository, _logger) = (statsRepository, teamRepository, logger);
 
         public async Task<IStatsResponse<StatsEntity>> Create(TeamViewModel firstTeam, TeamViewModel secondTeam)
         {
@@ -140,11 +138,12 @@ namespace eSports.Service.Stats.Implementations
                         x => x.FirstTeam.Name.Contains(filter.FirstTeam))
                     .WhereIf(!string.IsNullOrWhiteSpace(filter.SecondTeam),
                         x => x.SecondTeam.Name.Contains(filter.SecondTeam))
-                    .Select(s => new StatsViewModel()
+                    .Select(x => new StatsViewModel()
                     {
-                        FirstTeam = s.FirstTeam.Name,
-                        SecondTeam = s.SecondTeam.Name,
-                        Wins = s.Wins,
+                        Id = x.Id,
+                        FirstTeam = x.FirstTeam.Name,
+                        SecondTeam = x.SecondTeam.Name,
+                        Wins = x.Wins,
                     })
                     .ToListAsync();
 

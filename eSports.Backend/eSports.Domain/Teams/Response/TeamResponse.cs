@@ -8,6 +8,7 @@ namespace eSports.Domain.Teams.Response
         public string Name { get; set; }
         public string Country { get; set; }
         public List<PlayerEntity> Players { get; set; }
+        public string Description { get; set; }
         public StatusCode StatusCode { get; set; }
         public T Data { get; set; }
     }
@@ -17,6 +18,7 @@ namespace eSports.Domain.Teams.Response
         string Name { get; }
         string Country { get; }
         List<PlayerEntity> Players { get; }
+        string Description { get; }
         public StatusCode StatusCode { get; }
         T Data { get; }
     }

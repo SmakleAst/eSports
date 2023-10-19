@@ -134,14 +134,14 @@ namespace eSports.Service.Players.Implementations
                         x => x.Team.Name.Contains(filter.Team))
                     .WhereIf(filter.Age > 10 && filter.Age < 100,
                         x => x.Age == filter.Age)
-                    .Select(s => new PlayerViewModel()
+                    .Select(x => new PlayerViewModel()
                     {
-                        Id = s.Id,
-                        Name = s.Name,
-                        NickName = s.NickName,
-                        Age = s.Age,
-                        Team = s.Team.Name,
-                        Description = s.Description,
+                        Id = x.Id,
+                        Name = x.Name,
+                        NickName = x.NickName,
+                        Age = x.Age,
+                        Team = x.Team.Name,
+                        Description = x.Description,
                     })
                     .ToListAsync();
 
