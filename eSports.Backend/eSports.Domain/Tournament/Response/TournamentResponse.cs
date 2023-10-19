@@ -1,11 +1,5 @@
 ﻿using eSports.Domain.Enum;
-using eSports.Domain.Players.Entity;
 using eSports.Domain.Teams.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eSports.Domain.Tournament.Response
 {

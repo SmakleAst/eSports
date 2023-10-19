@@ -1,6 +1,5 @@
 ﻿using eSports.Backend.Domain.Players.Response;
 using eSports.DAL.Interfaces;
-using eSports.DAL.Repositories;
 using eSports.Domain.Enum;
 using eSports.Domain.Extensions;
 using eSports.Domain.Players.Entity;
@@ -20,8 +19,7 @@ namespace eSports.Service.Players.Implementations
         private ILogger<PlayerService> _logger;
 
         public PlayerService(IBaseRepository<PlayerEntity> playerRepository,
-                                IBaseRepository<TeamEntity> teamRepository,
-                                ILogger<PlayerService> logger) =>
+            IBaseRepository<TeamEntity> teamRepository, ILogger<PlayerService> logger) =>
                 (_playerRepository, _teamRepository, _logger) = (playerRepository, teamRepository, logger);
 
         public async Task<IPlayerResponse<PlayerEntity>> Create(CreatePlayerViewModel model)
@@ -108,13 +106,13 @@ namespace eSports.Service.Players.Implementations
                 _logger.LogInformation($"Игрок удалился: {player.NickName} {DateTime.Now}");
                 return new PlayerResponse<PlayerEntity>()
                 {
-                    Description = "Компьютер удален",
+                    Description = "Игрок удален",
                     StatusCode = StatusCode.Ok
                 };
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, $"[ComputerService.Delete]: {exception.Message}");
+                _logger.LogError(exception, $"[PlayerService.Delete]: {exception.Message}");
                 return new PlayerResponse<PlayerEntity>()
                 {
                     Description = $"{exception.Message}",
@@ -155,7 +153,7 @@ namespace eSports.Service.Players.Implementations
             }
             catch (Exception exception)
             {
-                _logger.LogError(exception, $"[PlayerService.GetComputers]: {exception.Message}");
+                _logger.LogError(exception, $"[PlayerService.GetAllPlayers]: {exception.Message}");
                 return new PlayerResponse<IEnumerable<PlayerViewModel>>()
                 {
                     Description = $"{exception.Message}",

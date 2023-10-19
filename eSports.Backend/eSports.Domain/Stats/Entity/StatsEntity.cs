@@ -7,6 +7,6 @@ namespace eSports.Domain.Stats.Entity
         public int Id { get; set; }
         public TeamEntity FirstTeam { get; set; }
         public TeamEntity SecondTeam { get; set; }
-        public double Winrate { get; set; }
+        public Tuple<int, int> Wins { get; set; }
     }
 }

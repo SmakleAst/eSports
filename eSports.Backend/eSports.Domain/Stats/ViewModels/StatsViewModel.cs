@@ -1,5 +1,4 @@
-﻿using eSports.Domain.Teams.Entity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace eSports.Domain.Stats.Filter
 {
@@ -8,12 +7,12 @@ namespace eSports.Domain.Stats.Filter
         public int Id { get; set; }
 
         [Display(Name = "Первая команда")]
-        public TeamEntity FirstTeam { get; set; }
+        public string FirstTeam { get; set; }
 
         [Display(Name = "Вторая команда")]
-        public TeamEntity SecondTeam { get; set; }
+        public string SecondTeam { get; set; }
 
         [Display(Name = "Винрейт")]
-        public double Winrate { get; set; }
+        public Tuple<int, int> Wins { get; set; }
     }
 }

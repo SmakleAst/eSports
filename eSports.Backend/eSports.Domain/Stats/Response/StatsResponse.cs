@@ -7,7 +7,8 @@ namespace eSports.Domain.Stats.Filter
     {
         public TeamEntity FirstTeam { get; set; }
         public TeamEntity SecondTeam { get; set; }
-        public double Winrate { get; set; }
+        public Tuple<int, int> Wins { get; set; }
+        public string Description { get; set; }
         public StatusCode StatusCode { get; set; }
         public T Data { get; set; }
     }
@@ -16,7 +17,8 @@ namespace eSports.Domain.Stats.Filter
     {
         TeamEntity FirstTeam { get; }
         TeamEntity SecondTeam { get; }
-        double Winrate { get; }
+        Tuple<int, int> Wins { get; }
+        string Description { get; }
         public StatusCode StatusCode { get; }
         T Data { get; }
     }
