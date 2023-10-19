@@ -136,7 +136,7 @@ namespace eSports.Service.Tournaments.Implementations
             }
         }
 
-        public async Task<ITournamentResponse<TournamentEntity>> UpdateTournamentStage(TournamentViewModel model)
+        public async Task<ITournamentResponse<TournamentEntity>> UpdateTournament(TournamentViewModel model)
         {
             //TODO: Реализовать механизм симуляции стадии турнира
             throw new NotImplementedException();
