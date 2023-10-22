@@ -2,8 +2,11 @@ using eSports.DAL;
 using eSports.DAL.Interfaces;
 using eSports.DAL.Repositories;
 using eSports.Domain.Players.Entity;
+using eSports.Domain.Teams.Entity;
 using eSports.Service.Players.Implementations;
 using eSports.Service.Players.Interfaces;
+using eSports.Service.Teams.Implementations;
+using eSports.Service.Teams.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +23,8 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 builder.Services.AddScoped<IBaseRepository<PlayerEntity>, PlayerRepository>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<IBaseRepository<TeamEntity>, TeamRepository>();
+builder.Services.AddScoped<ITeamService, TeamService>();
 
 var connectionString = builder.Configuration.GetConnectionString("MSSQL");
 builder.Services.AddDbContext<AppDbContext>(options =>

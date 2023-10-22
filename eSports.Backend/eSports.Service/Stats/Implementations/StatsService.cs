@@ -30,10 +30,10 @@ namespace eSports.Service.Stats.Implementations
                     $"- {firstTeam.Name} против {secondTeam.Name}");
 
                 var stat = await _statsRepository.GetAll()
-                    .FirstOrDefaultAsync(x => (x.FirstTeam.Name.Equals(firstTeam.Name) &&
-                                            x.SecondTeam.Name.Equals(secondTeam.Name)) ||
-                                            (x.FirstTeam.Name.Equals(secondTeam.Name) &&
-                                            x.SecondTeam.Name.Equals(firstTeam.Name)));
+                    .FirstOrDefaultAsync(x => (x.FirstTeam.Equals(firstTeam.Name) &&
+                                            x.SecondTeam.Equals(secondTeam.Name)) ||
+                                            (x.FirstTeam.Equals(secondTeam.Name) &&
+                                            x.SecondTeam.Equals(firstTeam.Name)));
 
                 if (stat != null)
                 {
@@ -61,9 +61,10 @@ namespace eSports.Service.Stats.Implementations
 
                 stat = new StatsEntity()
                 {
-                    FirstTeam = dbFirstTeam,
-                    SecondTeam = dbSecondTeam,
-                    Wins = new Tuple<int, int>(0, 0),
+                    FirstTeam = dbFirstTeam.Name,
+                    SecondTeam = dbSecondTeam.Name,
+                    FirstTeamScore = 0,
+                    SecondTeamScore = 0
                 };
 
                 await _statsRepository.Create(stat);
@@ -94,10 +95,10 @@ namespace eSports.Service.Stats.Implementations
                     $"- {model.FirstTeam} против {model.SecondTeam}");
 
                 var stat = await _statsRepository.GetAll()
-                    .FirstOrDefaultAsync(x => (x.FirstTeam.Name.Equals(model.FirstTeam) &&
-                                            x.SecondTeam.Name.Equals(model.SecondTeam)) ||
-                                            (x.FirstTeam.Name.Equals(model.SecondTeam) &&
-                                            x.SecondTeam.Name.Equals(model.FirstTeam)));
+                    .FirstOrDefaultAsync(x => (x.FirstTeam.Equals(model.FirstTeam) &&
+                                            x.SecondTeam.Equals(model.SecondTeam)) ||
+                                            (x.FirstTeam.Equals(model.SecondTeam) &&
+                                            x.SecondTeam.Equals(model.FirstTeam)));
 
                 if (stat == null)
                 {
@@ -110,8 +111,8 @@ namespace eSports.Service.Stats.Implementations
 
                 await _statsRepository.Delete(stat);
 
-                _logger.LogInformation($"Статистика удалилась: {stat.FirstTeam.Name}" +
-                    $"против {stat.SecondTeam.Name}");
+                _logger.LogInformation($"Статистика удалилась: {stat.FirstTeam}" +
+                    $"против {stat.SecondTeam}");
                 return new StatsResponse<StatsEntity>()
                 {
                     Description = "Статистика удалена",
@@ -135,15 +136,16 @@ namespace eSports.Service.Stats.Implementations
             {
                 var stat = await _statsRepository.GetAll()
                     .WhereIf(!string.IsNullOrWhiteSpace(filter.FirstTeam),
-                        x => x.FirstTeam.Name.Contains(filter.FirstTeam))
+                        x => x.FirstTeam.Contains(filter.FirstTeam))
                     .WhereIf(!string.IsNullOrWhiteSpace(filter.SecondTeam),
-                        x => x.SecondTeam.Name.Contains(filter.SecondTeam))
+                        x => x.SecondTeam.Contains(filter.SecondTeam))
                     .Select(x => new StatsViewModel()
                     {
                         Id = x.Id,
-                        FirstTeam = x.FirstTeam.Name,
-                        SecondTeam = x.SecondTeam.Name,
-                        Wins = x.Wins,
+                        FirstTeam = x.FirstTeam,
+                        SecondTeam = x.SecondTeam,
+                        FirstTeamScore = x.FirstTeamScore,
+                        SecondTeamScore = x.SecondTeamScore
                     })
                     .ToListAsync();
 
@@ -173,10 +175,10 @@ namespace eSports.Service.Stats.Implementations
                     $"против {secondTeam.Name}");
 
                 var stat = await _statsRepository.GetAll()
-                    .FirstOrDefaultAsync(x => (x.FirstTeam.Name.Equals(firstTeam.Name) &&
-                            x.SecondTeam.Name.Equals(secondTeam.Name)) ||
-                            (x.FirstTeam.Name.Equals(secondTeam.Name) &&
-                            x.SecondTeam.Name.Equals(firstTeam.Name)));
+                    .FirstOrDefaultAsync(x => (x.FirstTeam.Equals(firstTeam.Name) &&
+                            x.SecondTeam.Equals(secondTeam.Name)) ||
+                            (x.FirstTeam.Equals(secondTeam.Name) &&
+                            x.SecondTeam.Equals(firstTeam.Name)));
 
                 if (stat == null)
                 {
@@ -189,21 +191,21 @@ namespace eSports.Service.Stats.Implementations
 
                 if (isFirstTeamWin)
                 {
-                    stat.Wins = new Tuple<int, int>(stat.Wins.Item1 + 1, stat.Wins.Item2);
+                    stat.FirstTeamScore += 1;
                 }
                 else
                 {
-                    stat.Wins = new Tuple<int, int>(stat.Wins.Item1, stat.Wins.Item2 + 1);
+                    stat.SecondTeamScore += 1;
                 }
 
                 await _statsRepository.Update(stat);
 
-                _logger.LogInformation($"Статистика {stat.FirstTeam.Name} против" +
-                    $"{stat.SecondTeam.Name} изменена");
+                _logger.LogInformation($"Статистика {stat.FirstTeam} против" +
+                    $"{stat.SecondTeam} изменена");
                 return new StatsResponse<StatsEntity>()
                 {
-                    Description = $"Статистика {stat.FirstTeam.Name} против" +
-                        $"{stat.SecondTeam.Name} изменена",
+                    Description = $"Статистика {stat.FirstTeam} против" +
+                        $"{stat.SecondTeam} изменена",
                     StatusCode = StatusCode.Ok
                 };
             }

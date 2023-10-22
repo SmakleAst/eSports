@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\eSports.DAL\eSports.DAL.csproj" />
+    <ProjectReference Include="..\eSports.Domain\eSports.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

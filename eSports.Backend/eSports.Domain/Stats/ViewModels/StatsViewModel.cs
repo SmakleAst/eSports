@@ -12,7 +12,10 @@ namespace eSports.Domain.Stats.Filter
         [Display(Name = "Вторая команда")]
         public string SecondTeam { get; set; }
 
-        [Display(Name = "Винрейт")]
-        public Tuple<int, int> Wins { get; set; }
+        [Display(Name = "Победы первой команды")]
+        public int FirstTeamScore { get; set; }
+
+        [Display(Name = "Победы второй команды")]
+        public int SecondTeamScore { get; set; }
     }
 }
