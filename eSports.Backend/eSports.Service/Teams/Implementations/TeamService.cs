@@ -11,6 +11,7 @@ using eSports.Domain.Teams.ViewModels;
 using eSports.Service.Teams.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace eSports.Service.Teams.Implementations
 {
@@ -117,6 +118,8 @@ namespace eSports.Service.Teams.Implementations
                 var team = await _teamRepository.GetAll()
                     .WhereIf(!string.IsNullOrWhiteSpace(filter.Name),
                         x => x.Name.Contains(filter.Name))
+                    .WhereIf(!string.IsNullOrWhiteSpace(filter.Country),
+                        x => x.Country.Contains(filter.Country))
                     .Select(x => new TeamViewModel()
                     {
                         Id = x.Id,

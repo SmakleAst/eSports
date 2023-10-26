@@ -134,8 +134,7 @@ namespace eSports.Service.Players.Implementations
                         x => x.NickName.Contains(filter.NickName))
                     .WhereIf(!string.IsNullOrWhiteSpace(filter.Team),
                         x => x.Team.Name.Contains(filter.Team))
-                    .WhereIf(filter.Age > 10 && filter.Age < 100,
-                        x => x.Age == filter.Age)
+                    .WhereIf(filter.Age > 0, x => x.Age == filter.Age)
                     .Select(x => new PlayerViewModel()
                     {
                         Id = x.Id,
