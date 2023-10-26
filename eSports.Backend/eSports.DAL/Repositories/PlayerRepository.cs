@@ -1,5 +1,6 @@
 ﻿using eSports.DAL.Interfaces;
 using eSports.Domain.Players.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace eSports.DAL.Repositories
 {
@@ -12,6 +13,13 @@ namespace eSports.DAL.Repositories
 
         public async Task Create(PlayerEntity entity)
         {
+            if (entity.Team != null && entity.Team.Id > 0)
+            {
+                // Устанавливаем идентификатор TeamId вместо свойства навигации Team
+                entity.TeamId = entity.Team.Id;
+                entity.Team = null; // Очищаем свойство навигации Team
+            }
+
             await _appDbContext.Players.AddAsync(entity);
             await _appDbContext.SaveChangesAsync();
         }

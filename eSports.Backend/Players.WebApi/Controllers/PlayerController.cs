@@ -13,7 +13,7 @@ namespace Players.WebApi.Controllers
             (_playerService) = (computerService);
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreatePlayerViewModel model)
+        public async Task<IActionResult> Create([FromBody] CreatePlayerViewModel model)
         {
             var response = await _playerService.Create(model);
 

@@ -1,60 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import TeamPage from './TeamPage';
 
 const Team = () => {
   const [teams, setTeams] = useState([]);
   const [name, setName] = useState('');
   const [country, setCountry] = useState('');
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const response = await fetch('https://localhost:7246/Team/Create', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({
-//             name: name,
-//             country: country
-//         }),
-//       });
-//       if (response.ok) {
-//         // Отправка данных успешна
-//         setName('');
-//         setCountry('');
-
-//         useEffect();
-//       } else {
-//         // Обработка ошибки
-//         console.error('Ошибка при отправке данных');
-//       }
-//     } catch (error) {
-//       console.error('Ошибка при отправке данных', error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await fetch('https://localhost:7246/Team/TeamHandler');
-//         if (response.ok) {
-//             const responseData = await response.json();
-//             const data = responseData.data;
-//             //const teamsArray = Object.values(data).map((team) => Object.values(team)); // Преобразование объектов в массивы
-//             const teamsArray = Object.values(data);
-//             console.log(teamsArray);
-//             setTeams(teamsArray);
-//         } else {
-//           // Обработка ошибки
-//           console.error('Ошибка при получении данных');
-//         }
-//       } catch (error) {
-//         console.error('Ошибка при получении данных', error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
 
 const fetchData = async () => {
     try {
@@ -88,7 +39,7 @@ const fetchData = async () => {
       if (response.ok) {
         setName('');
         setCountry('');
-        fetchData(); // Обновление данных команды
+        fetchData();
       } else {
         console.error('Ошибка при отправке данных');
       }
@@ -98,7 +49,7 @@ const fetchData = async () => {
   };
   
   useEffect(() => {
-    fetchData(); // Вызов fetchData() при загрузке компонента
+    fetchData();
   }, []);
   
 
@@ -122,14 +73,7 @@ const fetchData = async () => {
             <tr key={index}>
                 <td>{team.name}</td>
                 <td>{team.country}</td>
-                <td>
-                    {/* <ul>
-                    {team.players && Array.from(JSON.parse(team.players)).map((player) => (
-                        <li key={player.id}>{player.name}</li>
-                    ))}
-                    </ul> */}
-                    {team.players}
-                </td>
+                <td>{team.players}</td>
             </tr>
           ))}
         </tbody>

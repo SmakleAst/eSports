@@ -43,7 +43,7 @@ namespace eSports.Service.Players.Implementations
                 }
 
                 var team = await _teamRepository.GetAll()
-                    .FirstOrDefaultAsync(x => x.Name == model.Name);
+                    .FirstOrDefaultAsync(x => x.Name == model.Team);
 
                 if (team == null)
                 {
@@ -59,10 +59,12 @@ namespace eSports.Service.Players.Implementations
                     Name = model.Name,
                     NickName = model.NickName,
                     Age = model.Age,
+                    TeamId = team.Id,
                     Team = team,
                     Description = model.Description
                 };
 
+                
                 await _playerRepository.Create(player);
 
                 _logger.LogInformation($"Игрок создался: {player.NickName} {DateTime.Now}");
