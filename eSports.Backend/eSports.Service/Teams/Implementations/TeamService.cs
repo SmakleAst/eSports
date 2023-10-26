@@ -1,7 +1,9 @@
-﻿using eSports.DAL.Interfaces;
+﻿using eSports.Backend.Domain.Players.Response;
+using eSports.DAL.Interfaces;
 using eSports.Domain.Enum;
 using eSports.Domain.Extensions;
 using eSports.Domain.Players.Entity;
+using eSports.Domain.Players.ViewModels;
 using eSports.Domain.Teams.Entity;
 using eSports.Domain.Teams.Filter;
 using eSports.Domain.Teams.Response;
@@ -198,6 +200,48 @@ namespace eSports.Service.Teams.Implementations
             {
                 _logger.LogError(exception, $"[TeamService.Update]: {exception.Message}");
                 return new TeamResponse<TeamEntity>()
+                {
+                    Description = $"{exception.Message}",
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
+
+        public async Task<ITeamResponse<TeamViewModel>> GetTeam(int id)
+        {
+            try
+            {
+                _logger.LogInformation($"Запрос на получение команды - {id}");
+
+                var team = await _teamRepository.GetAll()
+                    .Select(x => new TeamViewModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Country = x.Country,
+                        Players = string.Join(", ", x.Players.Select(p => p.NickName))
+                    })
+                    .FirstOrDefaultAsync(x => x.Id == id);
+
+                if (team == null)
+                {
+                    return new TeamResponse<TeamViewModel>()
+                    {
+                        Description = "Такой команды нет",
+                        StatusCode = StatusCode.PlayerNotFound
+                    };
+                }
+
+                return new TeamResponse<TeamViewModel>()
+                {
+                    Data = team,
+                    StatusCode = StatusCode.Ok
+                };
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, $"[TeamService.GetTeam]: {exception.Message}");
+                return new TeamResponse<TeamViewModel>()
                 {
                     Description = $"{exception.Message}",
                     StatusCode = StatusCode.InternalServerError

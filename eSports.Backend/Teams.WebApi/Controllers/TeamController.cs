@@ -58,5 +58,14 @@ namespace Teams.WebApi.Controllers
 
             return BadRequest(new { description = response.Description });
         }
+
+        [HttpGet]
+        [Route("Team/GetTeam/{id}")]
+        public async Task<IActionResult> GetTeam(int id)
+        {
+            var response = await _teamService.GetTeam(id);
+
+            return Json(new { data = response.Data });
+        }
     }
 }

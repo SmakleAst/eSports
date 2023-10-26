@@ -113,7 +113,8 @@ const Player = () => {
                 <th>Age</th>
                 <th>Team</th>
                 <th>Description</th>
-                <th>Actions</th>
+                <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -126,7 +127,6 @@ const Player = () => {
                     <td>{player.description}</td>
                     <td>
                         <button onClick={() => window.location.href = `/playerPage/${player.id}`}>View</button>
-                        {/* <Link to={`/playerPage/${player.id}`}>View</Link> */}
                     </td>
                     <td>
                         <button onClick={() => handleDelete(player.id)}>Delete</button>

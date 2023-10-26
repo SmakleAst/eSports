@@ -14,5 +14,7 @@ namespace eSports.Service.Teams.Interfaces
         Task<ITeamResponse<TeamEntity>> Update(TeamViewModel model);
 
         Task<ITeamResponse<IEnumerable<TeamViewModel>>> GetAllTeams(TeamFilter filter);
+
+        Task<ITeamResponse<TeamViewModel>> GetTeam(int id);
     }
 }

@@ -88,7 +88,8 @@ const fetchData = async () => {
             <th>Name</th>
             <th>Country</th>
             <th>Players</th>
-            <th>Actions</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -97,6 +98,9 @@ const fetchData = async () => {
                 <td>{team.name}</td>
                 <td>{team.country}</td>
                 <td>{team.players}</td>
+                <td>
+                    <button onClick={() => window.location.href = `/teamPage/${team.id}`}>View</button>
+                </td>
                 <td>
                     <button onClick={() => handleDelete(team.id)}>Delete</button>
                 </td>
