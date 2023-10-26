@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 
 const Player = () => {
     const [name, setName] = useState('');
@@ -89,7 +90,7 @@ const Player = () => {
     };
 
     useEffect(() => {
-    fetchData();
+        fetchData();
     }, []);
 
     return (
@@ -124,6 +125,10 @@ const Player = () => {
                     <td>{player.team}</td>
                     <td>{player.description}</td>
                     <td>
+                        <button onClick={() => window.location.href = `/playerPage/${player.id}`}>View</button>
+                        {/* <Link to={`/playerPage/${player.id}`}>View</Link> */}
+                    </td>
+                    <td>
                         <button onClick={() => handleDelete(player.id)}>Delete</button>
                     </td>
                 </tr>
@@ -134,4 +139,4 @@ const Player = () => {
       );
 };
 
-export default Player;
+export default Player

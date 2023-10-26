@@ -14,5 +14,7 @@ namespace eSports.Service.Players.Interfaces
         Task<IPlayerResponse<PlayerEntity>> Update(PlayerViewModel model);
 
         Task<IPlayerResponse<IEnumerable<PlayerViewModel>>> GetAllPlayers(PlayerFilter filter);
+
+        Task<IPlayerResponse<PlayerViewModel>> GetPlayer(int id);
     }
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Player from '../Player/Player';
 import Team from '../Team/Team';
+import PlayerPage from '../Player/PlayerPage';
 //import Tournament from '../Tournament/Tournament';
 
 const Home = () => {
@@ -12,18 +13,11 @@ const Home = () => {
 
   return (
     <div>
-      <nav>
-        <button onClick={() => handleComponentChange('Player')}>Players</button>
-        <button onClick={() => handleComponentChange('Team')}>Teams</button>
-        <button onClick={() => handleComponentChange('Tournaments')}>Tournaments</button>
-      </nav>
-      {currentComponent === 'Player' ? (
-        <Player />
-      ) : currentComponent === 'Team' ? (
-        <Team />
-      ) : (
-        <Team />
-      )}
+        <nav>
+            <button onClick={() => window.location.href = `/players`}>Players</button>
+            <button onClick={() => window.location.href = `/teams`}>Teams</button>
+            <button onClick={() => window.location.href = `/tournaments`}>Tournaments</button>
+        </nav>
     </div>
   );
 };

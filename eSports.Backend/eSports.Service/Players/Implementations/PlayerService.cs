@@ -223,5 +223,49 @@ namespace eSports.Service.Players.Implementations
                 };
             }
         }
+
+        public async Task<IPlayerResponse<PlayerViewModel>> GetPlayer(int id)
+        {
+            try
+            {
+                _logger.LogInformation($"Запрос на получение игрока - {id}");
+
+                var player = await _playerRepository.GetAll()
+                    .Select(x => new PlayerViewModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        NickName = x.NickName,
+                        Age = x.Age,
+                        Team = x.Team.Name,
+                        Description = x.Description,
+                    })
+                    .FirstOrDefaultAsync(x => x.Id == id);
+
+                if (player == null)
+                {
+                    return new PlayerResponse<PlayerViewModel>()
+                    {
+                        Description = "Такого игрока нет",
+                        StatusCode = StatusCode.PlayerNotFound
+                    };
+                }
+
+                return new PlayerResponse<PlayerViewModel>()
+                {
+                    Data = player,
+                    StatusCode = StatusCode.Ok
+                };
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, $"[PlayerService.GetPlayer]: {exception.Message}");
+                return new PlayerResponse<PlayerViewModel>()
+                {
+                    Description = $"{exception.Message}",
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
     }
 }

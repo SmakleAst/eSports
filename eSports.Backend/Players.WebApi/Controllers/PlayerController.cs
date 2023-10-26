@@ -58,5 +58,14 @@ namespace Players.WebApi.Controllers
 
             return BadRequest(new { description = response.Description });
         }
+
+        [HttpGet]
+        [Route("Player/GetPlayer/{id}")]
+        public async Task<IActionResult> GetPlayer(int id)
+        {
+            var response = await _playerService.GetPlayer(id);
+
+            return Json(new { data = response.Data });
+        }
     }
 }
