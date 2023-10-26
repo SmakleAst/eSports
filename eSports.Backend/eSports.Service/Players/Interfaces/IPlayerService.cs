@@ -9,7 +9,7 @@ namespace eSports.Service.Players.Interfaces
     {
         Task<IPlayerResponse<PlayerEntity>> Create(CreatePlayerViewModel model);
 
-        Task<IPlayerResponse<PlayerEntity>> Delete(PlayerViewModel model);
+        Task<IPlayerResponse<PlayerEntity>> Delete(int id);
 
         Task<IPlayerResponse<PlayerEntity>> Update(PlayerViewModel model);
 

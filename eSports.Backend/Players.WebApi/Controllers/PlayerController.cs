@@ -34,9 +34,9 @@ namespace Players.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeletePlayer(PlayerViewModel model)
+        public async Task<IActionResult> DeletePlayer([FromBody] int id)
         {
-            var response = await _playerService.Delete(model);
+            var response = await _playerService.Delete(id);
 
             if (response.StatusCode == eSports.Domain.Enum.StatusCode.Ok)
             {

@@ -70,14 +70,14 @@ namespace eSports.Service.Teams.Implementations
             }
         }
 
-        public async Task<ITeamResponse<TeamEntity>> Delete(TeamViewModel model)
+        public async Task<ITeamResponse<TeamEntity>> Delete(int id)
         {
             try
             {
-                _logger.LogInformation($"Запрос на удаление команды - {model.Name}");
+                _logger.LogInformation($"Запрос на удаление команды - {id}");
 
                 var team = await _teamRepository.GetAll()
-                    .FirstOrDefaultAsync(x => x.Name == model.Name);
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
                 if (team == null)
                 {

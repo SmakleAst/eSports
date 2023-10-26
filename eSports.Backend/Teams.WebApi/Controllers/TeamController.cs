@@ -34,9 +34,9 @@ namespace Teams.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteTeam(TeamViewModel model)
+        public async Task<IActionResult> DeleteTeam([FromBody] int id)
         {
-            var response = await _teamService.Delete(model);
+            var response = await _teamService.Delete(id);
 
             if (response.StatusCode == eSports.Domain.Enum.StatusCode.Ok)
             {

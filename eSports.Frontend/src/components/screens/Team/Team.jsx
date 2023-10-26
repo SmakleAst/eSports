@@ -47,6 +47,28 @@ const fetchData = async () => {
       console.error('Ошибка при отправке данных', error);
     }
   };
+
+  const handleDelete = async (index) => {
+    try {
+        const response = await fetch('https://localhost:7246/Team/DeleteTeam', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: index,
+              });
+        if (response.ok) {
+            const updatedTeams = [...teams];
+            updatedTeams.splice(index, 1);
+            setTeams(updatedTeams);
+            fetchData();
+        } else {
+            console.error('Ошибка при отправке данных');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+    };
   
   useEffect(() => {
     fetchData();
@@ -66,6 +88,7 @@ const fetchData = async () => {
             <th>Name</th>
             <th>Country</th>
             <th>Players</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -74,6 +97,9 @@ const fetchData = async () => {
                 <td>{team.name}</td>
                 <td>{team.country}</td>
                 <td>{team.players}</td>
+                <td>
+                    <button onClick={() => handleDelete(team.id)}>Delete</button>
+                </td>
             </tr>
           ))}
         </tbody>

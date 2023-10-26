@@ -9,7 +9,7 @@ namespace eSports.Service.Teams.Interfaces
     {
         Task<ITeamResponse<TeamEntity>> Create(CreateTeamViewModel model);
 
-        Task<ITeamResponse<TeamEntity>> Delete(TeamViewModel model);
+        Task<ITeamResponse<TeamEntity>> Delete(int id);
 
         Task<ITeamResponse<TeamEntity>> Update(TeamViewModel model);
 

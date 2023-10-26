@@ -85,14 +85,14 @@ namespace eSports.Service.Players.Implementations
             }
         }
 
-        public async Task<IPlayerResponse<PlayerEntity>> Delete(PlayerViewModel model)
+        public async Task<IPlayerResponse<PlayerEntity>> Delete(int id)
         {
             try
             {
-                _logger.LogInformation($"Запрос на удаление игрока - {model.NickName}");
+                _logger.LogInformation($"Запрос на удаление игрока - {id}");
 
                 var player = await _playerRepository.GetAll()
-                    .FirstOrDefaultAsync(x => x.NickName == model.NickName);
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
                 if (player == null)
                 {

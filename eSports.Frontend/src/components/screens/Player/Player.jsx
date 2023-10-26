@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 const Player = () => {
     const [name, setName] = useState('');
@@ -67,11 +66,34 @@ const Player = () => {
         }
       };
 
+    const handleDelete = async (index) => {
+    try {
+        const response = await fetch('https://localhost:7160/Player/DeletePlayer', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: index,
+              });
+        if (response.ok) {
+            const updatedPlayers = [...players];
+            updatedPlayers.splice(index, 1);
+            setPlayers(updatedPlayers);
+            fetchData();
+        } else {
+            console.error('Ошибка при отправке данных');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+    };
+
     useEffect(() => {
     fetchData();
     }, []);
 
     return (
+        
         <div>
         <form onSubmit={handleSubmit}>
             <input name="name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
@@ -90,6 +112,7 @@ const Player = () => {
                 <th>Age</th>
                 <th>Team</th>
                 <th>Description</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -100,6 +123,9 @@ const Player = () => {
                     <td>{player.age}</td>
                     <td>{player.team}</td>
                     <td>{player.description}</td>
+                    <td>
+                        <button onClick={() => handleDelete(player.id)}>Delete</button>
+                    </td>
                 </tr>
             ))}
             </tbody>
