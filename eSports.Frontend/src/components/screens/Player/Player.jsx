@@ -9,17 +9,21 @@ const Player = () => {
     const [description, setDescription] = useState('');
     const [players, setPlayers] = useState([]);
 
-    useEffect(() => {
     const fetchData = async () => {
         try {
-        const response = await axios.get('https://localhost:7160/Player/PlayerHandler');
-        setPlayers(response.data);
+          const response = await fetch('https://localhost:7160/Player/PlayerHandler');
+          if (response.ok) {
+            const responseData = await response.json();
+            const data = responseData.data;
+            const players = Object.values(data);
+            setPlayers(players);
+          } else {
+            console.error('Ошибка при получении данных');
+          }
         } catch (error) {
-        console.error(error);
+          console.error('Ошибка при получении данных', error);
         }
-    };
-    fetchData();
-    }, []);
+      };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -49,13 +53,12 @@ const Player = () => {
 
 
             if (response.ok) {
-                setPlayers([...players, response.data]);
-      
                 setName('');
                 setNickname('');
                 setAge('');
                 setTeam('');
                 setDescription('');
+                fetchData();
             } else {
                 console.error('Ошибка при отправке данных');
             }
@@ -63,6 +66,10 @@ const Player = () => {
           console.error(error);
         }
       };
+
+    useEffect(() => {
+    fetchData();
+    }, []);
 
     return (
         <div>
@@ -86,7 +93,15 @@ const Player = () => {
               </tr>
             </thead>
             <tbody>
-              {/* Здесь разместите данные таблицы */}
+                {players && players.map((player, index) => (
+                <tr key={index}>
+                    <td>{player.name}</td>
+                    <td>{player.nickName}</td>
+                    <td>{player.age}</td>
+                    <td>{player.team}</td>
+                    <td>{player.description}</td>
+                </tr>
+            ))}
             </tbody>
           </table>
         </div>

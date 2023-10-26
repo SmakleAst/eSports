@@ -15,9 +15,8 @@ namespace eSports.DAL.Repositories
         {
             if (entity.Team != null && entity.Team.Id > 0)
             {
-                // Устанавливаем идентификатор TeamId вместо свойства навигации Team
                 entity.TeamId = entity.Team.Id;
-                entity.Team = null; // Очищаем свойство навигации Team
+                entity.Team = null;
             }
 
             await _appDbContext.Players.AddAsync(entity);
