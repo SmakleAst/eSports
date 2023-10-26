@@ -1,6 +1,7 @@
 ﻿using eSports.DAL.Interfaces;
 using eSports.Domain.Enum;
 using eSports.Domain.Extensions;
+using eSports.Domain.Players.Entity;
 using eSports.Domain.Teams.Entity;
 using eSports.Domain.Teams.Filter;
 using eSports.Domain.Teams.Response;
@@ -14,10 +15,13 @@ namespace eSports.Service.Teams.Implementations
     public class TeamService : ITeamService
     {
         private readonly IBaseRepository<TeamEntity> _teamRepository;
+        private readonly IBaseRepository<PlayerEntity> _playerRepository;
         private ILogger<TeamService> _logger;
 
-        public TeamService(IBaseRepository<TeamEntity> teamRepository, ILogger<TeamService> logger) =>
-                (_teamRepository, _logger) = (teamRepository, logger);
+        public TeamService(IBaseRepository<TeamEntity> teamRepository,
+            IBaseRepository<PlayerEntity> playerRepository, ILogger<TeamService> logger) =>
+                (_teamRepository, _playerRepository, _logger) =
+                    (teamRepository, playerRepository, logger);
 
         public async Task<ITeamResponse<TeamEntity>> Create(CreateTeamViewModel model)
         {
@@ -43,7 +47,7 @@ namespace eSports.Service.Teams.Implementations
                 {
                     Name = model.Name,
                     Country = model.Country,
-                    Players = model.Players,
+                    Players = new List<PlayerEntity>(),
                 };
 
                 await _teamRepository.Create(team);
@@ -116,7 +120,7 @@ namespace eSports.Service.Teams.Implementations
                         Id = x.Id,
                         Name = x.Name,
                         Country = x.Country,
-                        Players = x.Players
+                        Players = string.Join(", ", x.Players.Select(p => p.NickName))
                     })
                     .ToListAsync();
 
@@ -155,12 +159,30 @@ namespace eSports.Service.Teams.Implementations
                     };
                 }
 
+                var players = new List<PlayerEntity>();
+                foreach (var nickName in model.Players.Split(", ").ToList())
+                {
+                    var player = await _playerRepository.GetAll().FirstOrDefaultAsync(x => x.NickName == nickName);
+                    if (player != null)
+                    {
+                        players.Add(player);
+                    }
+                    else
+                    {
+                        return new TeamResponse<TeamEntity>()
+                        {
+                            Description = "Одного из указанных игроков не существует",
+                            StatusCode = StatusCode.TeamNotFound
+                        };
+                    }
+                }
+
                 team = new TeamEntity()
                 {
                     Id = model.Id,
                     Name = model.Name,
                     Country = model.Country,
-                    Players = model.Players
+                    Players = players
                 };
 
                 await _teamRepository.Update(team);

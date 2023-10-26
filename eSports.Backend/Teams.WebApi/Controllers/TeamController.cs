@@ -13,7 +13,7 @@ namespace Teams.WebApi.Controllers
             _teamService = teamService;
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTeamViewModel model)
+        public async Task<IActionResult> Create([FromBody] CreateTeamViewModel model)
         {
             var response = await _teamService.Create(model);
 

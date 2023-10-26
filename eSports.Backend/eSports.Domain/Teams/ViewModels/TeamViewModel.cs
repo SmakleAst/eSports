@@ -1,5 +1,4 @@
-﻿using eSports.Domain.Players.Entity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace eSports.Domain.Teams.ViewModels
 {
@@ -14,6 +13,6 @@ namespace eSports.Domain.Teams.ViewModels
         public string Country { get; set; }
 
         [Display(Name = "Игроки:")]
-        public List<PlayerEntity> Players { get; set; }
+        public string Players { get; set; }
     }
 }

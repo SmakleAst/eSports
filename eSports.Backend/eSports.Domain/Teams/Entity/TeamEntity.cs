@@ -7,6 +7,6 @@ namespace eSports.Domain.Teams.Entity
         public int Id { get; set; }
         public string Name { get; set; }
         public string Country { get; set; }
-        public List<PlayerEntity> Players { get; set; }
+        public List<PlayerEntity> Players { get; set; } = new List<PlayerEntity>();
     }
 }

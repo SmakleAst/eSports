@@ -25,8 +25,7 @@ function Home() {
 
   useEffect(() => {
     fetchPlayers(setPlayers, setIsLoading);
-    console.log(players);
-  }, [players]);
+  },);
 
   const handleSubmit = event => {
     event.preventDefault();
