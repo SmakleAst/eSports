@@ -157,7 +157,7 @@ const Tournament = () => {
                         <td>{tournament.description}</td>
                         <td>{tournament.teams}</td>
                         <td>
-                            <button onClick={() => window.location.href = `/teamPage/${tournament.id}`}>View</button>
+                            <button onClick={() => window.location.href = `/tournamentPage/${tournament.id}`}>View</button>
                         </td>
                         <td>
                             <button onClick={() => handleDelete(tournament.id)}>Delete</button>

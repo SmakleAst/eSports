@@ -60,5 +60,14 @@ namespace Tournaments.WebApi.Controllers
 
             return BadRequest(new { description = response.Description });
         }
+
+        [HttpGet]
+        [Route("Tournament/GetTournament/{id}")]
+        public async Task<IActionResult> GetTeam(int id)
+        {
+            var response = await _tournamentService.GetTournament(id);
+
+            return Json(new { data = response.Data });
+        }
     }
 }

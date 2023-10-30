@@ -14,5 +14,7 @@ namespace eSports.Service.Tournaments.Interfaces
         Task<ITournamentResponse<TournamentEntity>> UpdateTournament(TournamentViewModel model);
 
         Task<ITournamentResponse<IEnumerable<TournamentViewModel>>> GetAllTournaments(TournamentFilter filter);
+
+        Task<ITournamentResponse<TournamentViewModel>> GetTournament(int id);
     }
 }

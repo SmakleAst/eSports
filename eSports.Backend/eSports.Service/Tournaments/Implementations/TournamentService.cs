@@ -2,6 +2,8 @@
 using eSports.Domain.Enum;
 using eSports.Domain.Extensions;
 using eSports.Domain.Teams.Entity;
+using eSports.Domain.Teams.Response;
+using eSports.Domain.Teams.ViewModels;
 using eSports.Domain.Tournament.Entity;
 using eSports.Domain.Tournament.Filter;
 using eSports.Domain.Tournament.Response;
@@ -9,7 +11,6 @@ using eSports.Domain.Tournament.ViewModels;
 using eSports.Service.Tournaments.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 
 namespace eSports.Service.Tournaments.Implementations
 {
@@ -151,6 +152,48 @@ namespace eSports.Service.Tournaments.Implementations
             {
                 _logger.LogError(exception, $"[TournamentService.GetAllTournaments]: {exception.Message}");
                 return new TournamentResponse<IEnumerable<TournamentViewModel>>()
+                {
+                    Description = $"{exception.Message}",
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
+        }
+
+        public async Task<ITournamentResponse<TournamentViewModel>> GetTournament(int id)
+        {
+            try
+            {
+                _logger.LogInformation($"Запрос на получение турнира - {id}");
+
+                var tournament = await _tournamentRepository.GetAll()
+                    .Select(x => new TournamentViewModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description,
+                        Teams = string.Join(", ", x.Teams.Select(p => p.Name)),
+                    })
+                    .FirstOrDefaultAsync(x => x.Id == id);
+
+                if (tournament == null)
+                {
+                    return new TournamentResponse<TournamentViewModel>()
+                    {
+                        Description = "Такого турнира нет",
+                        StatusCode = StatusCode.PlayerNotFound
+                    };
+                }
+
+                return new TournamentResponse<TournamentViewModel>()
+                {
+                    Data = tournament,
+                    StatusCode = StatusCode.Ok
+                };
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, $"[TournamentService.GetTournament]: {exception.Message}");
+                return new TournamentResponse<TournamentViewModel>()
                 {
                     Description = $"{exception.Message}",
                     StatusCode = StatusCode.InternalServerError
