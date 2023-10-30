@@ -1,7 +1,4 @@
-﻿using eSports.Domain.Teams.Entity;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace eSports.Domain.Stats.Entity
+﻿namespace eSports.Domain.Stats.Entity
 {
     public class StatsEntity
     {

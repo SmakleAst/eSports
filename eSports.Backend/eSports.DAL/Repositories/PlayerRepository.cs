@@ -1,6 +1,5 @@
 ﻿using eSports.DAL.Interfaces;
 using eSports.Domain.Players.Entity;
-using Microsoft.EntityFrameworkCore;
 
 namespace eSports.DAL.Repositories
 {
@@ -40,6 +39,12 @@ namespace eSports.DAL.Repositories
             await _appDbContext.SaveChangesAsync();
 
             return entity;
+        }
+
+        public async Task Attach(PlayerEntity entity)
+        {
+            _appDbContext.Players.Attach(entity);
+            await _appDbContext.SaveChangesAsync();
         }
     }
 }

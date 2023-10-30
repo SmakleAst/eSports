@@ -34,5 +34,11 @@ namespace eSports.DAL.Repositories
 
             return entity;
         }
+
+        public async Task Attach(TeamEntity entity)
+        {
+            _appDbContext.Teams.Attach(entity);
+            await _appDbContext.SaveChangesAsync();
+        }
     }
 }

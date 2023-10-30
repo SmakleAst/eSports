@@ -14,6 +14,6 @@ namespace eSports.Domain.Tournament.ViewModels
         public string Description { get; set; }
 
         [Display(Name = "Участники:")]
-        public List<TeamEntity> Teams { get; set; }
+        public string Teams { get; set; }
     }
 }

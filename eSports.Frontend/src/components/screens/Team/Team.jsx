@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import TeamPage from './TeamPage';
 
 const Team = () => {
     const [teams, setTeams] = useState([]);
@@ -60,7 +58,7 @@ const Team = () => {
             const response = await fetch('https://localhost:7246/Team/DeleteTeam', {
                     method: 'POST',
                     headers: {
-                    'Content-Type': 'application/json',
+                      'Content-Type': 'application/json',
                     },
                     body: index,
                 });
@@ -107,18 +105,19 @@ const Team = () => {
             <th>Name</th>
             <th>Country</th>
             <th>Players</th>
+            <th>Tournaments</th>
             <th></th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           {teams && teams
-          .filter(team => team.name.includes(filterName) && team.country.includes(filterCountry))
           .map((team, index) => (
             <tr key={index}>
                 <td>{team.name}</td>
                 <td>{team.country}</td>
                 <td>{team.players}</td>
+                <td>{team.tournaments}</td>
                 <td>
                     <button onClick={() => window.location.href = `/teamPage/${team.id}`}>View</button>
                 </td>

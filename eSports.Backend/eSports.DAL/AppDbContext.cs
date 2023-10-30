@@ -17,5 +17,13 @@ namespace eSports.DAL
         public DbSet<StatsEntity> Stats { get; set; }
         public DbSet<TeamEntity> Teams { get; set; }
         public DbSet<TournamentEntity> Tournaments { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<TournamentEntity>()
+                .HasMany(t => t.Teams)
+                .WithMany(t => t.Tournaments)
+                .UsingEntity(j => j.ToTable("TournamentTeams"));
+        }
     }
 }

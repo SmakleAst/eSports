@@ -12,7 +12,10 @@ namespace eSports.Domain.Teams.ViewModels
         [Display(Name = "Страна")]
         public string Country { get; set; }
 
-        [Display(Name = "Игроки:")]
+        [Display(Name = "Игроки: ")]
         public string Players { get; set; }
+
+        [Display(Name = "Турниры: ")]
+        public string Tournaments { get; set; }
     }
 }

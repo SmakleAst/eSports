@@ -15,7 +15,7 @@ namespace Tournaments.WebApi.Controllers
             _tournamentService = tournamentService;
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTournamentViewModel model)
+        public async Task<IActionResult> Create([FromBody] CreateTournamentViewModel model)
         {
             var response = await _tournamentService.Create(model);
 
@@ -36,9 +36,9 @@ namespace Tournaments.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteTournament(TournamentViewModel model)
+        public async Task<IActionResult> DeleteTournament([FromBody] int id)
         {
-            var response = await _tournamentService.Delete(model);
+            var response = await _tournamentService.Delete(id);
 
             if (response.StatusCode == eSports.Domain.Enum.StatusCode.Ok)
             {

@@ -8,6 +8,7 @@ using eSports.Domain.Teams.Entity;
 using eSports.Domain.Teams.Filter;
 using eSports.Domain.Teams.Response;
 using eSports.Domain.Teams.ViewModels;
+using eSports.Domain.Tournament.Entity;
 using eSports.Service.Teams.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -19,12 +20,14 @@ namespace eSports.Service.Teams.Implementations
     {
         private readonly IBaseRepository<TeamEntity> _teamRepository;
         private readonly IBaseRepository<PlayerEntity> _playerRepository;
+        private readonly IBaseRepository<TournamentEntity> _tournamentRepository;
         private ILogger<TeamService> _logger;
 
         public TeamService(IBaseRepository<TeamEntity> teamRepository,
-            IBaseRepository<PlayerEntity> playerRepository, ILogger<TeamService> logger) =>
-                (_teamRepository, _playerRepository, _logger) =
-                    (teamRepository, playerRepository, logger);
+            IBaseRepository<PlayerEntity> playerRepository,
+                IBaseRepository<TournamentEntity> tournamentRepository, ILogger<TeamService> logger) =>
+                    (_teamRepository, _playerRepository, _tournamentRepository, _logger) =
+                        (teamRepository, playerRepository, tournamentRepository, logger);
 
         public async Task<ITeamResponse<TeamEntity>> Create(CreateTeamViewModel model)
         {
@@ -51,6 +54,7 @@ namespace eSports.Service.Teams.Implementations
                     Name = model.Name,
                     Country = model.Country,
                     Players = new List<PlayerEntity>(),
+                    Tournaments = new List<TournamentEntity>()
                 };
 
                 await _teamRepository.Create(team);
@@ -125,7 +129,8 @@ namespace eSports.Service.Teams.Implementations
                         Id = x.Id,
                         Name = x.Name,
                         Country = x.Country,
-                        Players = string.Join(", ", x.Players.Select(p => p.NickName))
+                        Players = string.Join(", ", x.Players.Select(p => p.NickName)),
+                        Tournaments = string.Join(", ", x.Tournaments.Select(t => t.Name))
                     })
                     .ToListAsync();
 
@@ -182,12 +187,31 @@ namespace eSports.Service.Teams.Implementations
                     }
                 }
 
+                var tournaments = new List<TournamentEntity>();
+                foreach (var name in model.Tournaments.Split(", ").ToList())
+                {
+                    var tournament = await _tournamentRepository.GetAll().FirstOrDefaultAsync(x => x.Name == name);
+                    if (tournament != null)
+                    {
+                        tournaments.Add(tournament);
+                    }
+                    else
+                    {
+                        return new TeamResponse<TeamEntity>()
+                        {
+                            Description = "Одного из указанных турниров не существует",
+                            StatusCode = StatusCode.TeamNotFound
+                        };
+                    }
+                }
+
                 team = new TeamEntity()
                 {
                     Id = model.Id,
                     Name = model.Name,
                     Country = model.Country,
-                    Players = players
+                    Players = players,
+                    Tournaments = tournaments,
                 };
 
                 await _teamRepository.Update(team);
@@ -222,7 +246,8 @@ namespace eSports.Service.Teams.Implementations
                         Id = x.Id,
                         Name = x.Name,
                         Country = x.Country,
-                        Players = string.Join(", ", x.Players.Select(p => p.NickName))
+                        Players = string.Join(", ", x.Players.Select(p => p.NickName)),
+                        Tournaments = string.Join(", ", x.Tournaments.Select(p => p.Name))
                     })
                     .FirstOrDefaultAsync(x => x.Id == id);
 

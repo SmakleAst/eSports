@@ -1,7 +1,13 @@
 using eSports.DAL;
 using eSports.DAL.Interfaces;
 using eSports.DAL.Repositories;
+using eSports.Domain.Players.Entity;
+using eSports.Domain.Teams.Entity;
 using eSports.Domain.Tournament.Entity;
+using eSports.Service.Players.Implementations;
+using eSports.Service.Players.Interfaces;
+using eSports.Service.Teams.Implementations;
+using eSports.Service.Teams.Interfaces;
 using eSports.Service.Tournaments.Implementations;
 using eSports.Service.Tournaments.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +25,10 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 builder.Services.AddScoped<IBaseRepository<TournamentEntity>, TournamentRepository>();
 builder.Services.AddScoped<ITournamentService, TournamentService>();
+builder.Services.AddScoped<IBaseRepository<TeamEntity>, TeamRepository>();
+builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IBaseRepository<PlayerEntity>, PlayerRepository>();
+builder.Services.AddScoped<IPlayerService, PlayerService>();
 
 var connectionString = builder.Configuration.GetConnectionString("MSSQL");
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -40,6 +50,6 @@ app.UseCors("AllowAllOrigins");
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Tournaments}/{action=TournamentsHandler}");
+    pattern: "{controller=Tournament}/{action=TournamentHandler}");
 
 app.Run();

@@ -3,16 +3,23 @@ import Player from "../screens/Player/Player";
 import PlayerPage from "../screens/Player/PlayerPage";
 import Team from "../screens/Team/Team";
 import TeamPage from "../screens/Team/TeamPage";
+import Tournament from "../screens/Tournament/Tournament";
+import TournamentPage from "../screens/Tournament/TournamentPage";
 import Navbar from "./Navbar";
+
 
 const Router = () => {
     return <BrowserRouter>
         <Navbar />
         <Routes>
             <Route element={<Player />} path='/players' />
-            <Route element={<Team />} path='/teams' />
             <Route element={<PlayerPage />} path='/playerPage/:id' />
+
+            <Route element={<Team />} path='/teams' />
             <Route element={<TeamPage />} path='/teamPage/:id' />
+
+            <Route element={<Tournament />} path='/tournaments' />
+            <Route element={<TournamentPage />} path='/tournamentPage/:id' />
 
             <Route path='*' element={<div>Not found</div>}/>
         </Routes>

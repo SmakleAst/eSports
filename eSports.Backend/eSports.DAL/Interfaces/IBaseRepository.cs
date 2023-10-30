@@ -6,5 +6,6 @@
         IQueryable<T> GetAll();
         Task Delete(T entity);
         Task<T> Update(T entity);
+        Task Attach(T entity);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using eSports.DAL.Interfaces;
 using eSports.Domain.Enum;
 using eSports.Domain.Extensions;
+using eSports.Domain.Teams.Entity;
 using eSports.Domain.Tournament.Entity;
 using eSports.Domain.Tournament.Filter;
 using eSports.Domain.Tournament.Response;
@@ -8,17 +9,20 @@ using eSports.Domain.Tournament.ViewModels;
 using eSports.Service.Tournaments.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace eSports.Service.Tournaments.Implementations
 {
     public class TournamentService : ITournamentService
     {
         private readonly IBaseRepository<TournamentEntity> _tournamentRepository;
+        private readonly IBaseRepository<TeamEntity> _teamRepository;
         private ILogger<TournamentService> _logger;
 
         public TournamentService(IBaseRepository<TournamentEntity> tournamentRepository,
-            ILogger<TournamentService> logger) =>
-                (_tournamentRepository, _logger) = (tournamentRepository, logger);
+            IBaseRepository<TeamEntity> teamRepository, ILogger<TournamentService> logger) =>
+                (_tournamentRepository, _teamRepository, _logger) =
+                    (tournamentRepository, teamRepository, logger);
 
         public async Task<ITournamentResponse<TournamentEntity>> Create(CreateTournamentViewModel model)
         {
@@ -38,11 +42,29 @@ namespace eSports.Service.Tournaments.Implementations
                     };
                 }
 
+                if (model.Teams.Count % 2 != 0)
+                {
+                    return new TournamentResponse<TournamentEntity>()
+                    {
+                        Description = "Для создания турнира должно быть четное количество участвующих команд",
+                        StatusCode = StatusCode.InvalidTournamentTeamsCount
+                    };
+                }
+
+                var existingTeams = _teamRepository.GetAll()
+                                            .Where(x => model.Teams.Contains(x.Name))
+                                            .ToList();
+
+                foreach (var team in existingTeams)
+                {
+                    await _teamRepository.Attach(team);
+                }
+
                 tournament = new TournamentEntity()
                 {
                     Name = model.Name,
                     Description = model.Description,
-                    Teams = model.Teams
+                    Teams = existingTeams,
                 };
 
                 await _tournamentRepository.Create(tournament);
@@ -65,14 +87,14 @@ namespace eSports.Service.Tournaments.Implementations
             }
         }
 
-        public async Task<ITournamentResponse<TournamentEntity>> Delete(TournamentViewModel model)
+        public async Task<ITournamentResponse<TournamentEntity>> Delete(int id)
         {
             try
             {
-                _logger.LogInformation($"Запрос на удаление турнира - {model.Name}");
+                _logger.LogInformation($"Запрос на удаление турнира - {id}");
 
                 var tournament = await _tournamentRepository.GetAll()
-                    .FirstOrDefaultAsync(x => x.Name == model.Name);
+                    .FirstOrDefaultAsync(x => x.Id == id);
 
                 if (tournament == null)
                 {
@@ -88,7 +110,7 @@ namespace eSports.Service.Tournaments.Implementations
                 _logger.LogInformation($"Турнир удалился: {tournament.Name} {DateTime.Now}");
                 return new TournamentResponse<TournamentEntity>()
                 {
-                    Description = "Команда удалена",
+                    Description = "Турнир удален",
                     StatusCode = StatusCode.Ok
                 };
             }
@@ -115,7 +137,7 @@ namespace eSports.Service.Tournaments.Implementations
                         Id = x.Id,
                         Name = x.Name,
                         Description = x.Description,
-                        Teams = x.Teams
+                        Teams = string.Join(", ", x.Teams.Select(t => t.Name))
                     })
                     .ToListAsync();
 

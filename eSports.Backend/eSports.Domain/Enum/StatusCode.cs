@@ -13,6 +13,7 @@
 
         TournamentAlreadyExists = 31,
         TournamentNotFound = 32,
+        InvalidTournamentTeamsCount = 33,
 
         Ok = 200,
         InternalServerError = 500

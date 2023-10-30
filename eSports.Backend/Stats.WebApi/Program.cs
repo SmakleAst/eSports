@@ -1,8 +1,11 @@
 using eSports.DAL;
 using eSports.DAL.Interfaces;
 using eSports.DAL.Repositories;
+using eSports.Domain.Players.Entity;
 using eSports.Domain.Stats.Entity;
 using eSports.Domain.Teams.Entity;
+using eSports.Service.Players.Implementations;
+using eSports.Service.Players.Interfaces;
 using eSports.Service.Stats.Implementations;
 using eSports.Service.Stats.Interfaces;
 using eSports.Service.Teams.Implementations;
@@ -25,6 +28,8 @@ builder.Services.AddScoped<IBaseRepository<StatsEntity>, StatsRepository>();
 builder.Services.AddScoped<IStatsService, StatsService>();
 builder.Services.AddScoped<IBaseRepository<TeamEntity>, TeamRepository>();
 builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IBaseRepository<PlayerEntity>, PlayerRepository>();
+builder.Services.AddScoped<IPlayerService, PlayerService>();
 
 var connectionString = builder.Configuration.GetConnectionString("MSSQL");
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -44,8 +49,8 @@ app.UseAuthorization();
 
 app.UseCors("AllowAllOrigins");
 
-//app.MapControllerRoute(
-//    name: "default",
-//    pattern: "{controller=Stats}/{action=StatsHandler}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Stats}/{action=StatsHandler}");
 
 app.Run();

@@ -9,7 +9,7 @@ namespace eSports.Service.Tournaments.Interfaces
     {
         Task<ITournamentResponse<TournamentEntity>> Create(CreateTournamentViewModel model);
 
-        Task<ITournamentResponse<TournamentEntity>> Delete(TournamentViewModel model);
+        Task<ITournamentResponse<TournamentEntity>> Delete(int id);
 
         Task<ITournamentResponse<TournamentEntity>> UpdateTournament(TournamentViewModel model);
 
