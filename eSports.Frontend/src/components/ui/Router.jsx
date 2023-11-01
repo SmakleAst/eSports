@@ -6,6 +6,7 @@ import TeamPage from "../screens/Team/TeamPage";
 import Tournament from "../screens/Tournament/Tournament";
 import TournamentPage from "../screens/Tournament/TournamentPage";
 import Navbar from "./Navbar";
+import Stats from "../screens/Stats/Stats";
 
 
 const Router = () => {
@@ -20,6 +21,8 @@ const Router = () => {
 
             <Route element={<Tournament />} path='/tournaments' />
             <Route element={<TournamentPage />} path='/tournamentPage/:id' />
+
+            <Route element={<Stats />} path='/stats' />
 
             <Route path='*' element={<div>Not found</div>}/>
         </Routes>

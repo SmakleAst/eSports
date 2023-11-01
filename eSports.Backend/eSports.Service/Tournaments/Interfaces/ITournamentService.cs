@@ -11,7 +11,7 @@ namespace eSports.Service.Tournaments.Interfaces
 
         Task<ITournamentResponse<TournamentEntity>> Delete(int id);
 
-        Task<ITournamentResponse<TournamentEntity>> UpdateTournament(TournamentViewModel model);
+        Task<ITournamentResponse<TournamentViewModel>> SimulateTournamentStage(int id);
 
         Task<ITournamentResponse<IEnumerable<TournamentViewModel>>> GetAllTournaments(TournamentFilter filter);
 

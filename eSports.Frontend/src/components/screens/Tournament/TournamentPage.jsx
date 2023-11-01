@@ -9,6 +9,30 @@ const TournamentPage = () => {
 
     const {id} = useParams()
 
+    const handleSimulateStage = async (id) => {
+        try {
+            const response = await fetch('https://localhost:7171/Tournament/SimulateStage', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: id,
+                });
+            if (response.ok) {
+                const responseData = await response.json();
+                const tournament = responseData.data;
+                console.log(tournament);
+                setName(tournament.name);
+                setDescription(tournament.description);
+                setTeams(tournament.teams);
+            } else {
+                console.error('Ошибка при отправке данных');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
         if (!id) return
 
@@ -35,7 +59,7 @@ const TournamentPage = () => {
         }
 
         fetchData()
-    }, [id])
+    }, [id, name])
 
     return (
         <div>
@@ -55,6 +79,7 @@ const TournamentPage = () => {
               <input type="text" value={teams} readOnly />
             </label>
           </form>
+          <button onClick={() => handleSimulateStage(id)}>Simulate one stage</button>
         </div>
       );
 }

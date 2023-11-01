@@ -49,21 +49,16 @@ namespace Tournaments.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateTournamentStage(TournamentViewModel model)
+        public async Task<IActionResult> SimulateStage([FromBody] int id)
         {
-            var response = await _tournamentService.UpdateTournament(model);
+            var response = await _tournamentService.SimulateTournamentStage(id);
 
-            if (response.StatusCode == eSports.Domain.Enum.StatusCode.Ok)
-            {
-                return Ok(new { description = response.Description });
-            }
-
-            return BadRequest(new { description = response.Description });
+            return Json(new { data = response.Data });
         }
 
         [HttpGet]
         [Route("Tournament/GetTournament/{id}")]
-        public async Task<IActionResult> GetTeam(int id)
+        public async Task<IActionResult> GetTournament(int id)
         {
             var response = await _tournamentService.GetTournament(id);
 

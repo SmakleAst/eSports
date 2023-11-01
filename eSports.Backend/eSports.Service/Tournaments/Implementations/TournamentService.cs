@@ -1,9 +1,9 @@
 ﻿using eSports.DAL.Interfaces;
 using eSports.Domain.Enum;
 using eSports.Domain.Extensions;
+using eSports.Domain.Stats.Entity;
+using eSports.Domain.Stats.ViewModels;
 using eSports.Domain.Teams.Entity;
-using eSports.Domain.Teams.Response;
-using eSports.Domain.Teams.ViewModels;
 using eSports.Domain.Tournament.Entity;
 using eSports.Domain.Tournament.Filter;
 using eSports.Domain.Tournament.Response;
@@ -11,6 +11,8 @@ using eSports.Domain.Tournament.ViewModels;
 using eSports.Service.Tournaments.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace eSports.Service.Tournaments.Implementations
 {
@@ -18,12 +20,15 @@ namespace eSports.Service.Tournaments.Implementations
     {
         private readonly IBaseRepository<TournamentEntity> _tournamentRepository;
         private readonly IBaseRepository<TeamEntity> _teamRepository;
+        private readonly IBaseRepository<StatsEntity> _statRepository;
         private ILogger<TournamentService> _logger;
+        private static Random _randomWinner = new Random();
 
         public TournamentService(IBaseRepository<TournamentEntity> tournamentRepository,
-            IBaseRepository<TeamEntity> teamRepository, ILogger<TournamentService> logger) =>
-                (_tournamentRepository, _teamRepository, _logger) =
-                    (tournamentRepository, teamRepository, logger);
+            IBaseRepository<TeamEntity> teamRepository, IBaseRepository<StatsEntity> statRepository,
+                ILogger<TournamentService> logger) =>
+                    (_tournamentRepository, _teamRepository, _statRepository, _logger) =
+                        (tournamentRepository, teamRepository, statRepository, logger);
 
         public async Task<ITournamentResponse<TournamentEntity>> Create(CreateTournamentViewModel model)
         {
@@ -201,10 +206,121 @@ namespace eSports.Service.Tournaments.Implementations
             }
         }
 
-        public async Task<ITournamentResponse<TournamentEntity>> UpdateTournament(TournamentViewModel model)
+        public async Task<ITournamentResponse<TournamentViewModel>> SimulateTournamentStage(int id)
         {
-            //TODO: Реализовать механизм симуляции стадии турнира
-            throw new NotImplementedException();
+            try
+            {
+                _logger.LogInformation($"Запрос на симуляцию стадии турнира - {id}");
+
+                var tournament = await _tournamentRepository.GetAll()
+                    .Include(c => c.Teams)
+                    .FirstOrDefaultAsync(x => x.Id == id);
+
+                if (tournament == null)
+                {
+                    return new TournamentResponse<TournamentViewModel>()
+                    {
+                        Description = "Такого турнира нет",
+                        StatusCode = StatusCode.PlayerNotFound
+                    };
+                }
+
+                foreach (var team in tournament.Teams)
+                {
+                    await _teamRepository.Attach(team);
+                }
+
+                tournament.Teams.Shuffle();
+
+                for (int k = 0; k < tournament.Teams.Count / 2; k++)
+                {
+                    for (int i = 0, j = 1; j < tournament.Teams.Count; i++, j++)
+                    {
+                        if (_randomWinner.Next(0, 2) == 0)
+                        {
+                            var resultMatch = new ResultMatchViewModel()
+                            {
+                                FirstTeam = tournament.Teams[i].Name,
+                                SecondTeam = tournament.Teams[j].Name,
+                                Winner = tournament.Teams[i].Name
+                            };
+
+                            var json = JsonConvert.SerializeObject(resultMatch);
+
+                            using (var client = new HttpClient())
+                            {
+                                client.BaseAddress = new Uri("https://localhost:7126/Stats/UpdateStats");
+
+                                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                                var result = await client
+                                    .PostAsync("https://localhost:7126/Stats/UpdateStats", content);
+
+                                if (result.IsSuccessStatusCode)
+                                {
+                                    _logger.LogInformation
+                                        ($"Статистика записана -" +
+                                        $"{tournament.Teams[i].Name} против" +
+                                        $"{tournament.Teams[j].Name}");
+                                }
+                            }
+
+                            tournament.Teams.RemoveAt(j);
+                        }
+                        else
+                        {
+                            var resultMatch = new ResultMatchViewModel()
+                            {
+                                FirstTeam = tournament.Teams[i].Name,
+                                SecondTeam = tournament.Teams[j].Name,
+                                Winner = tournament.Teams[j].Name
+                            };
+
+                            var json = JsonConvert.SerializeObject(resultMatch);
+
+                            using (var client = new HttpClient())
+                            {
+                                client.BaseAddress = new Uri("https://localhost:7126/Stats/UpdateStats");
+
+                                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                                var result = await client
+                                    .PostAsync("https://localhost:7126/Stats/UpdateStats",content);
+
+                                if (result.IsSuccessStatusCode)
+                                {
+                                    _logger.LogInformation
+                                        ($"Статистика записана - " +
+                                        $"{tournament.Teams[i].Name} против" +
+                                        $"{tournament.Teams[j].Name}");
+                                }
+                            }
+
+                            tournament.Teams.RemoveAt(i);
+                        }
+                    }
+                }
+
+                await _tournamentRepository.Update(tournament);
+
+                return new TournamentResponse<TournamentViewModel>()
+                {
+                    Data = new TournamentViewModel {
+                        Id = tournament.Id,
+                        Name = tournament.Name,
+                        Description = tournament.Description,
+                        Teams = string.Join(", ", tournament.Teams.Select(p => p.Name)),
+                    },
+                    StatusCode = StatusCode.Ok
+                };
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, $"[TournamentService.GetTournament]: {exception.Message}");
+                return new TournamentResponse<TournamentViewModel>()
+                {
+                    Description = $"{exception.Message}",
+                    StatusCode = StatusCode.InternalServerError
+                };
+            }
         }
     }
 }

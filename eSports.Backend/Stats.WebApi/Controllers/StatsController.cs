@@ -1,5 +1,5 @@
 ﻿using eSports.Domain.Stats.Filter;
-using eSports.Domain.Teams.ViewModels;
+using eSports.Domain.Stats.ViewModels;
 using eSports.Service.Stats.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +13,9 @@ namespace Stats.WebApi.Controllers
             _statsService = statsService;
 
         [HttpPost]
-        public async Task<IActionResult> Create(TeamViewModel firstTeam, TeamViewModel secondTeam)
+        public async Task<IActionResult> Create(StatsViewModel model)
         {
-            var response = await _statsService.Create(firstTeam, secondTeam);
+            var response = await _statsService.Create(model);
 
             if (response.StatusCode == eSports.Domain.Enum.StatusCode.Ok)
             {
@@ -47,10 +47,9 @@ namespace Stats.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateStats(TeamViewModel firstTeam,
-            TeamViewModel secondTeam, bool isFirstTeamWin)
+        public async Task<IActionResult> UpdateStats([FromBody] ResultMatchViewModel model)
         {
-            var response = await _statsService.Update(firstTeam, secondTeam, isFirstTeamWin);
+            var response = await _statsService.Update(model);
 
             if (response.StatusCode == eSports.Domain.Enum.StatusCode.Ok)
             {

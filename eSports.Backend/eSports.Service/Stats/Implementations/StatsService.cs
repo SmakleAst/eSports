@@ -1,11 +1,10 @@
-﻿using eSports.Backend.Domain.Players.Response;
-using eSports.DAL.Interfaces;
+﻿using eSports.DAL.Interfaces;
 using eSports.Domain.Enum;
 using eSports.Domain.Extensions;
 using eSports.Domain.Stats.Entity;
 using eSports.Domain.Stats.Filter;
+using eSports.Domain.Stats.ViewModels;
 using eSports.Domain.Teams.Entity;
-using eSports.Domain.Teams.ViewModels;
 using eSports.Service.Stats.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -22,18 +21,18 @@ namespace eSports.Service.Stats.Implementations
             IBaseRepository<TeamEntity> teamRepository, ILogger<StatsService> logger) =>
                 (_statsRepository, _teamRepository, _logger) = (statsRepository, teamRepository, logger);
 
-        public async Task<IStatsResponse<StatsEntity>> Create(TeamViewModel firstTeam, TeamViewModel secondTeam)
+        public async Task<IStatsResponse<StatsEntity>> Create(StatsViewModel model)
         {
             try
             {
                 _logger.LogInformation($"Запрос на создание поля статистики" +
-                    $"- {firstTeam.Name} против {secondTeam.Name}");
+                    $"- {model.FirstTeam} против {model.SecondTeam}");
 
                 var stat = await _statsRepository.GetAll()
-                    .FirstOrDefaultAsync(x => (x.FirstTeam.Equals(firstTeam.Name) &&
-                                            x.SecondTeam.Equals(secondTeam.Name)) ||
-                                            (x.FirstTeam.Equals(secondTeam.Name) &&
-                                            x.SecondTeam.Equals(firstTeam.Name)));
+                    .FirstOrDefaultAsync(x => (x.FirstTeam.Equals(model.FirstTeam) &&
+                                            x.SecondTeam.Equals(model.SecondTeam)) ||
+                                            (x.FirstTeam.Equals(model.SecondTeam) &&
+                                            x.SecondTeam.Equals(model.FirstTeam)));
 
                 if (stat != null)
                 {
@@ -45,10 +44,10 @@ namespace eSports.Service.Stats.Implementations
                 }
 
                 var dbFirstTeam = await _teamRepository.GetAll()
-                    .FirstOrDefaultAsync(x => x.Name == firstTeam.Name);
+                    .FirstOrDefaultAsync(x => x.Name == model.FirstTeam);
 
                 var dbSecondTeam = await _teamRepository.GetAll()
-                    .FirstOrDefaultAsync(x => x.Name == firstTeam.Name);
+                    .FirstOrDefaultAsync(x => x.Name == model.SecondTeam);
 
                 if (dbFirstTeam == null || dbSecondTeam == null)
                 {
@@ -59,12 +58,15 @@ namespace eSports.Service.Stats.Implementations
                     };
                 }
 
+                await _teamRepository.Attach(dbFirstTeam);
+                await _teamRepository.Attach(dbSecondTeam);
+
                 stat = new StatsEntity()
                 {
                     FirstTeam = dbFirstTeam.Name,
                     SecondTeam = dbSecondTeam.Name,
-                    FirstTeamScore = 0,
-                    SecondTeamScore = 0
+                    FirstTeamScore = model.FirstTeamScore,
+                    SecondTeamScore = model.SecondTeamScore
                 };
 
                 await _statsRepository.Create(stat);
@@ -135,10 +137,9 @@ namespace eSports.Service.Stats.Implementations
             try
             {
                 var stat = await _statsRepository.GetAll()
-                    .WhereIf(!string.IsNullOrWhiteSpace(filter.FirstTeam),
-                        x => x.FirstTeam.Contains(filter.FirstTeam))
-                    .WhereIf(!string.IsNullOrWhiteSpace(filter.SecondTeam),
-                        x => x.SecondTeam.Contains(filter.SecondTeam))
+                    .WhereIf(!string.IsNullOrWhiteSpace(filter.Team),
+                        x => x.FirstTeam.Contains(filter.Team) ||
+                            x.SecondTeam.Contains(filter.Team))
                     .Select(x => new StatsViewModel()
                     {
                         Id = x.Id,
@@ -166,42 +167,46 @@ namespace eSports.Service.Stats.Implementations
             }
         }
 
-        public async Task<IStatsResponse<StatsEntity>> Update(TeamViewModel firstTeam,
-            TeamViewModel secondTeam, bool isFirstTeamWin)
+        public async Task<IStatsResponse<StatsEntity>> Update(ResultMatchViewModel model)
         {
             try
             {
-                _logger.LogInformation($"Запрос на изменение статистики - {firstTeam.Name}" +
-                    $"против {secondTeam.Name}");
+                _logger.LogInformation($"Запрос на изменение статистики - {model.FirstTeam}" +
+                    $"против {model.SecondTeam}");
 
                 var stat = await _statsRepository.GetAll()
-                    .FirstOrDefaultAsync(x => (x.FirstTeam.Equals(firstTeam.Name) &&
-                            x.SecondTeam.Equals(secondTeam.Name)) ||
-                            (x.FirstTeam.Equals(secondTeam.Name) &&
-                            x.SecondTeam.Equals(firstTeam.Name)));
+                    .FirstOrDefaultAsync(x => (x.FirstTeam.Equals(model.FirstTeam) &&
+                            x.SecondTeam.Equals(model.SecondTeam)) ||
+                            (x.FirstTeam.Equals(model.SecondTeam) &&
+                            x.SecondTeam.Equals(model.FirstTeam)));
 
                 if (stat == null)
                 {
-                    return new StatsResponse<StatsEntity>()
+                    return await Create(new StatsViewModel
                     {
-                        Description = "Такая статистика не найдена",
-                        StatusCode = StatusCode.StatsNotFound
-                    };
+                        FirstTeam = model.FirstTeam,
+                        SecondTeam = model.SecondTeam,
+                        FirstTeamScore = model.Winner.Equals(model.FirstTeam) ? 1 : 0,
+                        SecondTeamScore = model.Winner.Equals(model.SecondTeam) ? 1 : 0
+                    });
                 }
 
-                if (isFirstTeamWin)
+                stat = new StatsEntity
                 {
-                    stat.FirstTeamScore += 1;
-                }
-                else
-                {
-                    stat.SecondTeamScore += 1;
-                }
+                    Id = stat.Id,
+                    FirstTeam = stat.FirstTeam,
+                    SecondTeam = stat.SecondTeam,
+                    FirstTeamScore = model.Winner.Equals(stat.FirstTeam) ?
+                        stat.FirstTeamScore += 1 : stat.FirstTeamScore,
+                    SecondTeamScore = model.Winner.Equals(stat.SecondTeam) ?
+                        stat.SecondTeamScore += 1 : stat.SecondTeamScore
+                };
 
                 await _statsRepository.Update(stat);
 
                 _logger.LogInformation($"Статистика {stat.FirstTeam} против" +
                     $"{stat.SecondTeam} изменена");
+
                 return new StatsResponse<StatsEntity>()
                 {
                     Description = $"Статистика {stat.FirstTeam} против" +

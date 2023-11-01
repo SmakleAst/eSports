@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
 
 const Player = () => {
     const [name, setName] = useState('');
@@ -118,7 +117,6 @@ const Player = () => {
     }, [filterName, filterNickName, filterAge, filterTeam]);
 
     return (
-        
         <div>
         <form onSubmit={handleSubmit}>
             <input name="name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder='Name' />
@@ -146,20 +144,20 @@ const Player = () => {
             </thead>
             <tbody>
                 {players && players.map((player, index) => (
-                <tr key={index}>
-                    <td>{player.name}</td>
-                    <td>{player.nickName}</td>
-                    <td>{player.age}</td>
-                    <td>{player.team}</td>
-                    <td>{player.description}</td>
-                    <td>
-                        <button onClick={() => window.location.href = `/playerPage/${player.id}`}>View</button>
-                    </td>
-                    <td>
-                        <button onClick={() => handleDelete(player.id)}>Delete</button>
-                    </td>
-                </tr>
-            ))}
+                  <tr key={index}>
+                      <td>{player.name}</td>
+                      <td>{player.nickName}</td>
+                      <td>{player.age}</td>
+                      <td>{player.team}</td>
+                      <td>{player.description}</td>
+                      <td>
+                          <button onClick={() => window.location.href = `/playerPage/${player.id}`}>View</button>
+                      </td>
+                      <td>
+                          <button onClick={() => handleDelete(player.id)}>Delete</button>
+                      </td>
+                  </tr>
+                 ))}
             </tbody>
           </table>
         </div>
