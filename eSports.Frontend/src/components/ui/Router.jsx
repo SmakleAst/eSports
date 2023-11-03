@@ -7,26 +7,29 @@ import Tournament from "../screens/Tournament/Tournament";
 import TournamentPage from "../screens/Tournament/TournamentPage";
 import Navbar from "./Navbar";
 import Stats from "../screens/Stats/Stats";
+import Home from "../screens/Home/Home";
 
 
 const Router = () => {
-    return <BrowserRouter>
-        <Navbar />
-        <Routes>
-            <Route element={<Player />} path='/players' />
-            <Route element={<PlayerPage />} path='/playerPage/:id' />
+  return <BrowserRouter>
+    <Navbar />
+    <Routes>
+      <Route element={<Home />} path='/' />
 
-            <Route element={<Team />} path='/teams' />
-            <Route element={<TeamPage />} path='/teamPage/:id' />
+      <Route element={<Player />} path='/players' />
+      <Route element={<PlayerPage />} path='/playerPage/:id' />
 
-            <Route element={<Tournament />} path='/tournaments' />
-            <Route element={<TournamentPage />} path='/tournamentPage/:id' />
+      <Route element={<Team />} path='/teams' />
+      <Route element={<TeamPage />} path='/teamPage/:id' />
 
-            <Route element={<Stats />} path='/stats' />
+      <Route element={<Tournament />} path='/tournaments' />
+      <Route element={<TournamentPage />} path='/tournamentPage/:id' />
 
-            <Route path='*' element={<div>Not found</div>}/>
-        </Routes>
-    </BrowserRouter>
+      <Route element={<Stats />} path='/stats' />
+
+      <Route path='*' element={<div>Not found</div>}/>
+      </Routes>
+  </BrowserRouter>
 }
 
 export default Router

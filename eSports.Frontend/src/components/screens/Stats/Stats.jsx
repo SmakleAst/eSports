@@ -1,63 +1,31 @@
 import React, { useState, useEffect } from 'react';
+import StatsService from './StatsComponents/StatsService';
+import StatsFilter from './StatsComponents/StatsFilter';
+import StatsTable from './StatsComponents/StatsTable';
 
 const Stats = () => {
-    const [firstTeam, setFirstTeam] = useState('');
-    const [secondTeam, setSecondTeam] = useState('');
-    const [firstTeamWins, setFirstTeamWins] = useState('');
-    const [secondTeamWins, setSecondTeamWins] = useState('');
-    const [allStats, setAllStats] = useState([]);
-    const [filterTeam, setFilterTeam] = useState('');
+  const [allStats, setAllStats] = useState([]);
+  const [filterTeam, setFilterTeam] = useState('');
 
-    const fetchData = async () => {
-        try {
-          const response = await fetch(`https://localhost:7126/Stats/StatsHandler?team=${filterTeam}`);
-          if (response.ok) {
-            const responseData = await response.json();
-            const data = responseData.data;
-            const tmpStats = Object.values(data);
-            setAllStats(tmpStats);
-          } else {
-            console.error('Ошибка при получении данных');
-          }
-        } catch (error) {
-          console.error('Ошибка при получении данных', error);
-        }
-      };
+  const fetchData = async () => {
+    const players = await StatsService.getStats(filterTeam);
+    setAllStats(players);
+  };
 
-    const handleTeamChange = (e) => {
-        const value = e.target.value;
-        setFilterTeam(value);
-      };
+  const handleFilterChange = (team) => {
+    setFilterTeam(team);
+  };
 
-    useEffect(() => {
-        fetchData();
-    }, [filterTeam]);
+  useEffect(() => {
+      fetchData();
+  }, [filterTeam]);
 
-    return (
-        <div>
-            <input name="filterFirstTeam" type="text" value={filterTeam} onChange={handleTeamChange} placeholder='Filter by team' />
-            <table>
-            <thead>
-                <tr>
-                    <th>First Team</th>
-                    <th>Wins</th>
-                    <th>Wins</th>
-                    <th>Second Team</th>
-                </tr>
-            </thead>
-            <tbody>
-                {allStats && allStats.map((stat, index) => (
-                    <tr key={index}>
-                        <td>{stat.firstTeam}</td>
-                        <td>{stat.firstTeamScore}</td>
-                        <td>{stat.secondTeamScore}</td>
-                        <td>{stat.secondTeam}</td>
-                    </tr>
-                    ))}
-            </tbody>
-            </table>
-        </div>
-      );
+  return (
+      <div>
+        <StatsFilter filterTeam={filterTeam} handleFilterChange={handleFilterChange}/>
+        <StatsTable stats={allStats}/>
+      </div>
+    );
 };
 
 export default Stats
