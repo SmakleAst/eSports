@@ -1,5 +1,4 @@
-﻿using eSports.Domain.Teams.Entity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace eSports.Domain.Tournament.ViewModels
 {

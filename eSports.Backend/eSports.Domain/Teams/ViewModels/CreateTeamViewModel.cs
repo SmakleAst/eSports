@@ -1,6 +1,4 @@
-﻿using eSports.Domain.Players.Entity;
-
-namespace eSports.Domain.Teams.ViewModels
+﻿namespace eSports.Domain.Teams.ViewModels
 {
     public class CreateTeamViewModel
     {

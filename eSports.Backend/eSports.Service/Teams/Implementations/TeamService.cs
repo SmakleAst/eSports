@@ -1,9 +1,7 @@
-﻿using eSports.Backend.Domain.Players.Response;
-using eSports.DAL.Interfaces;
+﻿using eSports.DAL.Interfaces;
 using eSports.Domain.Enum;
 using eSports.Domain.Extensions;
 using eSports.Domain.Players.Entity;
-using eSports.Domain.Players.ViewModels;
 using eSports.Domain.Teams.Entity;
 using eSports.Domain.Teams.Filter;
 using eSports.Domain.Teams.Response;
@@ -12,7 +10,6 @@ using eSports.Domain.Tournament.Entity;
 using eSports.Service.Teams.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 
 namespace eSports.Service.Teams.Implementations
 {

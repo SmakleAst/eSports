@@ -1,6 +1,4 @@
-﻿using eSports.Domain.Players.Filter;
-using eSports.Domain.Players.ViewModels;
-using eSports.Domain.Tournament.Filter;
+﻿using eSports.Domain.Tournament.Filter;
 using eSports.Domain.Tournament.ViewModels;
 using eSports.Service.Tournaments.Interfaces;
 using Microsoft.AspNetCore.Mvc;
