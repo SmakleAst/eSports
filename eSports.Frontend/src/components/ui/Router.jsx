@@ -5,9 +5,10 @@ import Team from "../screens/Team/Team";
 import TeamPage from "../screens/Team/TeamPage";
 import Tournament from "../screens/Tournament/Tournament";
 import TournamentPage from "../screens/Tournament/TournamentPage";
-import Navbar from "./Navbar";
+import Navbar from "../globalComponents/Navbar";
 import Stats from "../screens/Stats/Stats";
 import Home from "../screens/Home/Home";
+import Footer from "../globalComponents/Footer";
 
 
 const Router = () => {
@@ -28,7 +29,8 @@ const Router = () => {
       <Route element={<Stats />} path='/stats' />
 
       <Route path='*' element={<div>Not found</div>}/>
-      </Routes>
+    </Routes>
+    <Footer />
   </BrowserRouter>
 }
 

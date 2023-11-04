@@ -1,10 +1,11 @@
 import React from 'react';
 import TeamList from './TeamList'
+import "/src/assets/styles/team.css"
 
 const TeamTable = ({ teams, onDeleteTeam }) => {
   return (
-    <div>
-      <table>
+    <div className="team-table-container">
+      <table className="team-table">
       <thead>
           <tr>
             <th>Название</th>

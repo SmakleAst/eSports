@@ -1,10 +1,11 @@
 import React from 'react';
 import PlayerList from './PlayerList';
+import "/src/assets/styles/player.css"
 
 const PlayerTable = ({ players, onDeletePlayer }) => {
   return (
-    <div>
-      <table>
+    <div className="player-table-container">
+      <table className="player-table">
         <thead>
           <tr>
             <th>Имя</th>

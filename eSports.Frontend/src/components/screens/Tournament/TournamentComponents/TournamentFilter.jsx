@@ -1,8 +1,9 @@
 import React from 'react';
+import "/src/assets/styles/tournament.css"
 
 const TournamentFilter = ({ filterName, handleFilterChange }) => {
     return (
-      <div>
+      <div className="tournament-filter">
         <input
           name="filterName"
           type="text"

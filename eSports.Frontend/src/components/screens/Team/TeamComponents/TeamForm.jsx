@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import "/src/assets/styles/team.css"
 
 const TeamForm = ({ onCreateTeam }) => {
   const [name, setName] = useState('');
@@ -19,7 +20,7 @@ const TeamForm = ({ onCreateTeam }) => {
   };
   
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="create-team-form">
       <input
         name="name"
         type="text"
@@ -34,7 +35,7 @@ const TeamForm = ({ onCreateTeam }) => {
         onChange={(e) => setCountry(e.target.value)}
         placeholder='Страна'
       />
-      <button type="submit">Submit</button>
+      <button type="submit">Создать</button>
     </form>
   );
 };

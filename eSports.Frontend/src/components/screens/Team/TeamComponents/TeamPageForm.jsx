@@ -1,27 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import "/src/assets/styles/team.css"
 
 const TeamPageForm = ({ teamData }) => {
   return (
-    <form>
-      <label>
-        Название:
-        <input type="text" value={teamData.name} readOnly />
-      </label>
+    <form className="team-page-form">
+      <input className="team-page-form-textarea-input" type="text" value={teamData.name} readOnly />
       <br />
-      <label>
-        Страна:
-        <input type="text" value={teamData.country} readOnly />
-      </label>
+      <input className="team-page-form-textarea-input" type="text" value={teamData.country} readOnly />
       <br />
-      <label>
-        Игроки:
-        <input type="text" value={teamData.players} readOnly />
-      </label>
+      <label className="team-page-form-label">Игроки:</label>
+      <textarea className="team-page-form-textarea-input" type="text" value={teamData.players} readOnly />
       <br />
-      <label>
-        Участвует в турнирах:
-        <input type="text" value={teamData.tournaments} readOnly />
-      </label>
+      <label className="team-page-form-label">Участвует в турнирах:</label>
+      <textarea className="team-page-form-textarea-input" type="text" value={teamData.tournaments} readOnly />
     </form>
   );
 };

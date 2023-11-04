@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import "/src/assets/styles/tournament.css"
 
 const TournamentForm = ({ teams, onCreateTournament }) => {
   const [name, setName] = useState('');
@@ -30,10 +31,11 @@ const TournamentForm = ({ teams, onCreateTournament }) => {
   };
   
   useEffect(() => {
+
   }, [selectedTeams]);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="create-tournament-form">
       <input
         name="name"
         type="text"
@@ -48,19 +50,22 @@ const TournamentForm = ({ teams, onCreateTournament }) => {
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Описание турнира"
       />
-      {teams.map((team) => (
-        <div key={team.id}>
-          <input
-            name="teams"
-            type="checkbox"
-            value={team.name}
-            checked={selectedTeams.includes(team.name)}
-            onChange={handleCheckboxChange}
-          />
-          <label>{team.name}</label>
-        </div>
-      ))}
-      <button type="submit">Submit</button>
+      <div className="select-teams">
+        {teams.map((team) => (
+          <div key={team.id}>
+            <label>
+            <input
+              name="teams"
+              type="checkbox"
+              value={team.name}
+              checked={selectedTeams.includes(team.name)}
+              onChange={handleCheckboxChange}
+            />
+            {team.name}</label>
+          </div>
+        ))}
+      </div>
+      <button type="submit">Создать</button>
     </form>
   );
 };

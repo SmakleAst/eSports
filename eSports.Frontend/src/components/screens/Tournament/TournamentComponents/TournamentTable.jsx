@@ -1,10 +1,11 @@
 import React from 'react';
 import TournamentList from './TournamentList'
+import "/src/assets/styles/tournament.css"
 
 const TournamentTable = ({ tournaments, onDeleteTournament }) => {
   return (
-    <div>
-      <table>
+    <div className="tournament-table-container">
+      <table className="tournament-table">
         <thead>
           <tr>
             <th>Название</th>

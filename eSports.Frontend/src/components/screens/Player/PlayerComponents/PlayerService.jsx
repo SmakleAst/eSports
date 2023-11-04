@@ -64,18 +64,41 @@ class PlayerService {
   static async getOnePlayer(playerId) {
     try {
       const response = await fetch(`https://localhost:7160/Player/GetPlayer/${playerId}`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-          },
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
       });
       if (response.ok) {
-          const responseData = await response.json();
-          const player = responseData.data;
-          return player;
+        const responseData = await response.json();
+        const player = responseData.data;
+        return player;
       } else {
-          console.error('Ошибка при получении данных');
-          return [];
+        console.error('Ошибка при получении данных');
+        return [];
+      }
+    } catch (error) {
+      console.error('Ошибка при получении данных', error);
+      return [];
+    }
+  }
+
+  static async getTeams() {
+    try {
+      const response = await fetch(`https://localhost:7246/Team/TeamHandler`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        const data = responseData.data;
+        const teamsArray = Object.values(data);
+        return teamsArray;
+      } else {
+        console.error('Ошибка при получении данных');
+        return [];
       }
     } catch (error) {
         console.error('Ошибка при получении данных', error);

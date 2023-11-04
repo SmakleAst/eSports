@@ -1,10 +1,11 @@
 import React from 'react';
 import StatsList from './StatsList';
+import "/src/assets/styles/stats.css"
 
 const StatsTable = ({ stats }) => {
   return (
-    <div>
-      <table>
+    <div className="stats-table-container">
+      <table className="stats-table">
         <thead>
           <tr>
             <th></th>

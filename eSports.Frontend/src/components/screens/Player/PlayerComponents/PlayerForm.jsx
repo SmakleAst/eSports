@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import "/src/assets/styles/player.css"
 
-const PlayerForm = ({ onCreatePlayer }) => {
+const PlayerForm = ({ teams, onCreatePlayer }) => {
   const [name, setName] = useState('');
   const [nickName, setNickName] = useState('');
   const [age, setAge] = useState('');
@@ -28,7 +29,7 @@ const PlayerForm = ({ onCreatePlayer }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="create-player-form">
       <input
         name="name"
         type="text"
@@ -50,12 +51,23 @@ const PlayerForm = ({ onCreatePlayer }) => {
         onChange={(e) => setAge(e.target.value)}
         placeholder='Возраст'
       />
-      <input name="team"
+      {/* <input name="team"
         type="text"
         value={team}
         onChange={(e) => setTeam(e.target.value)}
         placeholder='Команда'
-      />
+      /> */}
+      <select
+        name="team"
+        value={team}
+        onChange={(e) => setTeam(e.target.value)}
+        placeholder='Команда'
+      >
+        <option value="">Выберите команду</option>
+        {teams.map((team) => (
+          <option key={team.name} value={team.name}>{team.name}</option>
+        ))}
+      </select>
       <input
         name="description"
         type="text"

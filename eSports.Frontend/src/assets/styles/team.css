@@ -1,0 +1,130 @@
+.team-container {
+    margin-top: 60px;
+    margin-left: 20px;
+    margin-right: 20px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.team-content-container {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.team-filter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-right: 5%;
+    position: absolute;
+    top: 12%;
+    right: 5%;
+}
+
+.team-filter input {
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-left: auto;
+}
+
+.create-team-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 30%;
+    float: left;
+    margin-right: 10px;
+    align-items: center;
+}
+
+.create-team-form input {
+    padding: 10px;
+    width: 250px;
+}
+
+.create-team-form button {
+    background-color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.team-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.team-page-form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 70%;
+}
+
+.team-page-form-label {
+    font-size: 25px;
+}
+
+.team-page-form-textarea-input {
+    background-color: rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    border: 1px solid black;
+    color: white;
+    margin-bottom: 10px;
+    height: 80px;
+    font-size: 40px;
+    overflow: auto;
+    resize: none;
+}
+
+.right-image {
+    margin-left: auto;
+    max-width: 100%;
+    max-height: 500px;
+}
+
+.team-table-container {
+    background-color: rgba(0, 0, 0, 0.3);
+    opacity: 1;
+    border: 1px solid white;
+    color: white;
+    display: flex;
+    align-items: flex-start;
+    gap: 1%;
+    padding: 1%;
+    height: 100%;
+    max-height: 470px;
+    overflow: auto;
+}
+
+.team-table {
+    width: 800px;
+    color: white;
+    margin-right: 20px;
+}
+
+.team-table th,
+    .team-table td {
+        padding: 10px;
+        width: 25%;
+        font-weight: bold;
+}
+
+.team-table th {
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 1;
+    border: 1px solid white;
+    color: white;
+    font-size: large;
+}

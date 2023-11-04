@@ -1,8 +1,9 @@
 import React from 'react';
+import "/src/assets/styles/stats.css"
 
 const StatsFilter = ({ filterTeam, handleFilterChange }) => {
   return (
-    <div>
+    <div className="stats-filter">
       <input
           name="filterFirstTeam"
           type="text"

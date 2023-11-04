@@ -1,10 +1,11 @@
 import React from 'react';
+import "/src/assets/styles/team.css"
 
 const TeamFilter = ({ filters, handleFilterChange }) => {
   const { filterName, filterCountry } = filters;
 
   return (
-    <div>
+    <div className="team-filter">
       <input
         name="filterName"
         type="text"

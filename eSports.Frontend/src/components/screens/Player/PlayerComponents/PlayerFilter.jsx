@@ -1,9 +1,10 @@
+import "/src/assets/styles/player.css"
 
 const PlayerFilter = ({ filters, handleFilterChange }) => {
   const { filterName, filterNickName, filterAge, filterTeam } = filters;
 
   return (
-    <div>
+    <div className="player-filter">
       <input
         type="text"
         value={filterName}

@@ -3,6 +3,7 @@ import TeamTable from './TeamComponents/TeamTable';
 import TeamForm from './TeamComponents/TeamForm';
 import TeamFilter from './TeamComponents/TeamFilter';
 import TeamService from './TeamComponents/TeamService';
+import "/src/assets/styles/team.css"
 
 const Team = () => {
   const [teams, setTeams] = useState([]);
@@ -53,10 +54,13 @@ const Team = () => {
   
 
   return (
-    <div>
-      <TeamForm onCreateTeam={handleCreateTeam} />
+    <div className="team-container">
+      <h1>Создать команду: </h1>
       <TeamFilter filters={filters} handleFilterChange={handleFilterChange}/>
-      <TeamTable teams={teams} onDeleteTeam={handleDeleteTeam} />
+      <div className="team-content-container">
+        <TeamForm onCreateTeam={handleCreateTeam} />
+        <TeamTable teams={teams} onDeleteTeam={handleDeleteTeam} />
+      </div>
     </div>
   );
 };

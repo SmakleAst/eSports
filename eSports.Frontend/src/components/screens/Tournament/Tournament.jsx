@@ -3,6 +3,7 @@ import TournamentForm from './TournamentComponents/TournamentForm';
 import TournamentTable from './TournamentComponents/TournamentTable';
 import TournamentService from './TournamentComponents/TournamentService';
 import TournamentFilter from './TournamentComponents/TournamentFilter';
+import "/src/assets/styles/tournament.css"
 
 const Tournament = () => {
   const [teams, setTeams] = useState([]);
@@ -51,10 +52,13 @@ const Tournament = () => {
   }, [tournaments]);
 
   return (
-    <div>
-      <TournamentForm teams={teams} onCreateTournament={handleCreateTournament} />
+    <div className="tournament-container">
+      <h1>Создать Турнир: </h1>
       <TournamentFilter filterName={filterName} handleFilterChange={handleFilterChange} />
-      <TournamentTable tournaments={tournaments} onDeleteTournament={handleDeleteTournament} />
+      <div className="tournament-content-container">
+        <TournamentForm teams={teams} onCreateTournament={handleCreateTournament} />
+        <TournamentTable tournaments={tournaments} onDeleteTournament={handleDeleteTournament} />
+      </div>
     </div>
   );
 }

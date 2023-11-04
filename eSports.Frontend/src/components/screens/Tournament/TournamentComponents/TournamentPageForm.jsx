@@ -1,22 +1,30 @@
+import "/src/assets/styles/tournament.css"
+
 const TournamentPageForm = ({ tournamentData }) => {
   return (
-    <form>
-      <label>
-        Название:
-        <input type="text" value={tournamentData.name} readOnly />
-      </label>
+    <form className="tournament-page-form">
+      <input
+        className="tournament-page-form-textarea-input"
+        type="text"
+        value={tournamentData.name}
+        readOnly
+      />
       <br />
-      <label>
-        Описание:
-        <input type="text" value={tournamentData.description} readOnly />
-      </label>
+      <textarea
+        className="tournament-page-form-textarea-input"
+        type="text"
+        value={tournamentData.description}
+        readOnly
+      />
       <br />
-      <label>
-        Участники:
-        <input type="text" value={tournamentData.teams} readOnly />
-      </label>
-    </form>
-          
+      <label className="team-page-form-label">Участники:</label>
+      <textarea
+        className="tournament-page-form-textarea-participants"
+        type="text"
+        value={tournamentData.teams}
+        readOnly
+      />
+    </form>     
   );
 };
 

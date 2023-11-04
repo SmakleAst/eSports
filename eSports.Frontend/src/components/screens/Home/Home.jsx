@@ -1,11 +1,12 @@
 import React from 'react';
+import './styles/home.css'
 
 const Home = () => {
   return (
-    <div>
-      <h1>eSports</h1>
+    <div className="container">
+      <h1 className="title" data-text="eSports">eSports</h1>
     </div>
   );
 };
 
-export default Home;
+export default Home
