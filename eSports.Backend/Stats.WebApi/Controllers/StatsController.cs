@@ -46,7 +46,7 @@ namespace Stats.WebApi.Controllers
             return BadRequest(new { description = response.Description });
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdateStats([FromBody] ResultMatchViewModel model)
         {
             var response = await _statsService.Update(model);

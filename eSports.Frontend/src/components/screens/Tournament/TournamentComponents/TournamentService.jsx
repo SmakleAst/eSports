@@ -116,7 +116,7 @@ class TournamentService {
   static async simulateStage(tournamentId) {
     try {
       const response = await fetch('https://localhost:7171/Tournament/SimulateStage', {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },

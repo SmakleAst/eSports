@@ -28,7 +28,7 @@ const TeamPage = () => {
   return (
     <div className="team-page">
       <TeamPageForm teamData={teamData} />
-      <img src="/public/sf2-item.png" alt="Your Image" class="right-image" />
+      <img src="/public/sf-item.png" alt="Your Image" class="right-image" />
     </div>
   );
 }

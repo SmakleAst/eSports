@@ -234,66 +234,35 @@ namespace eSports.Service.Tournaments.Implementations
 
                 for (int i = 0, j = 1; j < tournament.Teams.Count; i++, j++)
                 {
-                    if (_randomWinner.Next(0, 2) == 0)
+                    var winner = _randomWinner.Next(0, 2);
+                    
+                    var resultMatch = new ResultMatchViewModel()
                     {
-                        var resultMatch = new ResultMatchViewModel()
-                        {
-                            FirstTeam = tournament.Teams[i].Name,
-                            SecondTeam = tournament.Teams[j].Name,
-                            Winner = tournament.Teams[i].Name
-                        };
+                        FirstTeam = tournament.Teams[i].Name,
+                        SecondTeam = tournament.Teams[j].Name,
+                        Winner = tournament.Teams[winner == 0 ? i : j].Name
+                    };
 
-                        var json = JsonConvert.SerializeObject(resultMatch);
+                    var json = JsonConvert.SerializeObject(resultMatch);
 
-                        using (var client = new HttpClient())
-                        {
-                            client.BaseAddress = new Uri("https://localhost:7126/Stats/UpdateStats");
-
-                            var content = new StringContent(json, Encoding.UTF8, "application/json");
-                            var result = await client
-                                .PostAsync("https://localhost:7126/Stats/UpdateStats", content);
-
-                            if (result.IsSuccessStatusCode)
-                            {
-                                _logger.LogInformation
-                                    ($"Статистика записана -" +
-                                    $"{tournament.Teams[i].Name} против" +
-                                    $"{tournament.Teams[j].Name}");
-                            }
-                        }
-
-                        tournament.Teams.RemoveAt(j);
-                    }
-                    else
+                    using (var client = new HttpClient())
                     {
-                        var resultMatch = new ResultMatchViewModel()
+                        client.BaseAddress = new Uri("https://localhost:7126/Stats/UpdateStats");
+
+                        var content = new StringContent(json, Encoding.UTF8, "application/json");
+                        var result = await client
+                            .PutAsync("https://localhost:7126/Stats/UpdateStats", content);
+
+                        if (result.IsSuccessStatusCode)
                         {
-                            FirstTeam = tournament.Teams[i].Name,
-                            SecondTeam = tournament.Teams[j].Name,
-                            Winner = tournament.Teams[j].Name
-                        };
-
-                        var json = JsonConvert.SerializeObject(resultMatch);
-
-                        using (var client = new HttpClient())
-                        {
-                            client.BaseAddress = new Uri("https://localhost:7126/Stats/UpdateStats");
-
-                            var content = new StringContent(json, Encoding.UTF8, "application/json");
-                            var result = await client
-                                .PostAsync("https://localhost:7126/Stats/UpdateStats",content);
-
-                            if (result.IsSuccessStatusCode)
-                            {
-                                _logger.LogInformation
-                                    ($"Статистика записана - " +
-                                    $"{tournament.Teams[i].Name} против" +
-                                    $"{tournament.Teams[j].Name}");
-                            }
+                            _logger.LogInformation
+                                ($"Статистика записана -" +
+                                $"{tournament.Teams[i].Name} против" +
+                                $"{tournament.Teams[j].Name}");
                         }
-
-                        tournament.Teams.RemoveAt(i);
                     }
+
+                    tournament.Teams.RemoveAt(winner == 0 ? j : i);
                 }
 
                 await _tournamentRepository.Update(tournament);

@@ -46,7 +46,7 @@ namespace Tournaments.WebApi.Controllers
             return BadRequest(new { description = response.Description });
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> SimulateStage([FromBody] int id)
         {
             var response = await _tournamentService.SimulateTournamentStage(id);

@@ -46,7 +46,7 @@ namespace Players.WebApi.Controllers
             return BadRequest(new { description = response.Description });
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdatePlayer(PlayerViewModel model)
         {
             var response = await _playerService.Update(model);

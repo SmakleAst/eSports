@@ -9,7 +9,7 @@ const TournamentFilter = ({ filterName, handleFilterChange }) => {
           type="text"
           value={filterName}
           onChange={(event) => handleFilterChange(event.target.value)}
-          placeholder='Название команды'
+          placeholder='Название турнира'
         />
       </div>
     );

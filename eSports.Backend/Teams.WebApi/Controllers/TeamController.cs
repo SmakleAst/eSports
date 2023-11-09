@@ -46,7 +46,7 @@ namespace Teams.WebApi.Controllers
             return BadRequest(new { description = response.Description });
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdateTeam(TeamViewModel model)
         {
             var response = await _teamService.Update(model);
