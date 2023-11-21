@@ -9,6 +9,7 @@ import Navbar from "../globalComponents/Navbar";
 import Stats from "../screens/Stats/Stats";
 import Home from "../screens/Home/Home";
 import Footer from "../globalComponents/Footer";
+import Status from "../screens/Status/Status";
 
 
 const Router = () => {
@@ -27,6 +28,8 @@ const Router = () => {
       <Route element={<TournamentPage />} path='/tournamentPage/:id' />
 
       <Route element={<Stats />} path='/stats' />
+
+      <Route element={<Status/>} path='/status' />
 
       <Route path='*' element={<div>Not found</div>}/>
     </Routes>

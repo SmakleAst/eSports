@@ -58,5 +58,11 @@ namespace Stats.WebApi.Controllers
 
             return BadRequest(new { description = response.Description });
         }
+
+        [HttpGet]
+        public IActionResult GetStatus()
+        {
+            return Ok();
+        }
     }
 }

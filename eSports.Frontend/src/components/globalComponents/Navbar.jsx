@@ -9,6 +9,7 @@ const Navbar = () => {
         <button onClick={() => window.location.href = `/players`}>Игроки</button>
         <button onClick={() => window.location.href = `/tournaments`}>Турниры</button>
         <button onClick={() => window.location.href = `/stats`}>Статистика команд</button>
+        <button onClick={() => window.location.href = `/status`}>Статус микровервисов</button>
       </nav>
     </div>
   );

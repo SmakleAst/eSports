@@ -67,5 +67,11 @@ namespace Teams.WebApi.Controllers
 
             return Json(new { data = response.Data });
         }
+
+        [HttpGet]
+        public IActionResult GetStatus()
+        {
+            return Ok();
+        }
     }
 }
